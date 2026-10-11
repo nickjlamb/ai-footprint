@@ -13,10 +13,9 @@ Set a monthly spend limit on the Anthropic Console key as the last line of defen
 """
 import json
 import os
-import time
 import threading
+import time
 from collections import defaultdict, deque
-
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query, Request
@@ -128,7 +127,7 @@ class TightenIn(BaseModel):
     prompt: str
 
 
-@api.get("/health")
+@api.api_route("/health", methods=["GET", "HEAD"])  # HEAD for uptime monitors and status badges
 def health():
     return {"ok": True}
 
@@ -166,7 +165,7 @@ def tighten(body: TightenIn, request: Request):
         )
     except Exception as e:  # never echo the prompt into logs
         print(f"anthropic error: {type(e).__name__}")
-        raise HTTPException(502, "The rewrite service is unavailable right now.")
+        raise HTTPException(502, "The rewrite service is unavailable right now.") from None
 
     out = next((b.input for b in msg.content if b.type == "tool_use"), None)
     if not out or not str(out.get("rewritten", "")).strip():
@@ -194,7 +193,7 @@ def _run(name, fn, *args):
     try:
         return _ok(fn(*args))
     except fp.InputError as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from e
 
 
 @api.get("/api")

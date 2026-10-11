@@ -1,0 +1,33 @@
+name: Methodology or source
+description: Suggest a newer or better source, or question a figure.
+labels: [methodology]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks. Figures change only through this process, so the server and the [calculator page](https://www.pharmatools.ai/water-consumption-calculator) stay in step. See [CONTRIBUTING.md](https://github.com/nickjlamb/ai-footprint/blob/main/CONTRIBUTING.md#changing-the-methodology).
+  - type: input
+    id: figure
+    attributes:
+      label: Which figure
+      placeholder: "Energy per simple text prompt (0.34 Wh)"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link to the primary source where possible, such as a provider disclosure or paper.
+    validations:
+      required: true
+  - type: textarea
+    id: says
+    attributes:
+      label: What the source says
+      description: The figure, and the boundary it uses (for example onsite cooling only, or including electricity generation).
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it should change

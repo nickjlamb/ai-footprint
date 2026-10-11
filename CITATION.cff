@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use AI Footprint or its methodology, please cite it as below."
+title: "AI Footprint: water and energy footprint of AI use"
+abstract: >-
+  An MCP server and JSON API that estimates the water and energy used by AI
+  prompts and agent sessions, with the accounting boundary, assumptions,
+  sources and methodology version attached to every result.
+type: software
+authors:
+  - family-names: Lamb
+    given-names: Nick
+    orcid: "https://orcid.org/0009-0009-6266-8499"
+    affiliation: PharmaTools.AI
+version: 1.0.0
+date-released: "2026-10-11"
+license: MIT
+repository-code: "https://github.com/nickjlamb/ai-footprint"
+url: "https://www.pharmatools.ai/water-consumption-calculator"
+keywords:
+  - model-context-protocol
+  - mcp-server
+  - ai-sustainability
+  - water-footprint
+  - energy
+  - green-ai

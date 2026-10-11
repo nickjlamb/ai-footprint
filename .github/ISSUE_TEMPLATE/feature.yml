@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest a tool, parameter or improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Check the [roadmap](https://github.com/nickjlamb/ai-footprint/blob/main/ROADMAP.md) first. If it's there, a comment on why it matters to you helps set priorities.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you're trying to do
+      description: The question you want answered, or the workflow, not just the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: If it needs new figures, where would they come from?

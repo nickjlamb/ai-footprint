@@ -1,0 +1,68 @@
+{
+    "summary": "Energy first, water derived from it. Per-prompt energy comes from 2025 vendor disclosures (OpenAI ~0.34 Wh, Google median 0.24 Wh for text); water = energy x water intensity. 'onsite' counts data-centre cooling only; 'comprehensive' adds the water consumed generating the electricity.",
+    "energy_per_query_wh": {
+        "simple": 0.34,
+        "mixed": 1.0,
+        "intensive": 3.0
+    },
+    "usage_tiers": {
+        "simple": "Simple text \u2013 chat, search, summaries",
+        "mixed": "Mixed \u2013 text plus some images and reasoning",
+        "intensive": "Intensive \u2013 image generation, deep reasoning"
+    },
+    "water_per_wh_ml": {
+        "onsite": 1.0,
+        "comprehensive": 4.1
+    },
+    "boundaries": {
+        "onsite": "Vendor-reported, onsite data-centre cooling only (~1 mL/Wh, implied by Google's 2025 disclosure)",
+        "comprehensive": "Onsite cooling plus water consumed generating the electricity (~4.1 mL/Wh; US grid average per Li et al.)"
+    },
+    "typical_text_prompt": {
+        "onsite_ml": 0.34,
+        "comprehensive_ml": 1.39,
+        "2023_research_estimate_ml": 40
+    },
+    "why_estimates_vary_100x": [
+        "When it was measured: Google reports a 33x drop in energy per prompt in twelve months; 2023 estimates (~40 mL/prompt) describe hardware that no longer exists.",
+        "Where the line is drawn: onsite cooling only vs including water used to generate the electricity gives figures several times apart. Neither is wrong; a figure that does not say which cannot be checked.",
+        "What is measured: chat prompts vs agentic tasks, which reprocess a growing context over dozens of calls and can exceed per-prompt figures by orders of magnitude.",
+        "Whose data centre: onsite water intensity differs ~9x between providers \u2013 0.12 L/kWh (Amazon), 0.27 (Microsoft), ~1.08 implied by Google. This methodology uses the highest."
+    ],
+    "limitations": [
+        "Vendor figures are not peer-reviewed, describe median prompts and exclude model training.",
+        "Electricity-generation water uses US grid averages; real figures depend on data-centre location and grid mix.",
+        "Results are indicative estimates, not measurements."
+    ],
+    "sources": [
+        {
+            "name": "Google (2025), Measuring the environmental impact of AI inference",
+            "url": "https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference/",
+            "used_for": "Median Gemini text prompt 0.24 Wh; onsite water 0.26 mL per prompt (~1.08 mL/Wh)"
+        },
+        {
+            "name": "OpenAI per-query figures (2025), via DatacenterDynamics",
+            "url": "https://www.datacenterdynamics.com/en/news/sam-altman-chatgpt-queries-consume-034-watt-hours-of-electricity-and-0000085-gallons-of-water/",
+            "used_for": "~0.34 Wh per ChatGPT query \u2013 the 'simple' tier"
+        },
+        {
+            "name": "Li et al., Making AI Less Thirsty",
+            "url": "https://arxiv.org/abs/2304.03271",
+            "used_for": "~3.1 mL/Wh for water consumed in electricity generation (US grid average)"
+        },
+        {
+            "name": "MIT Technology Review (2025) analysis",
+            "url": "https://www.technologyreview.com/2025/08/21/1122288/google-gemini-ai-energy/",
+            "used_for": "Image generation and long reasoning at roughly 3 Wh or more \u2013 the 'intensive' tier"
+        },
+        {
+            "name": "Water Footprint Network product gallery",
+            "url": "https://www.waterfootprint.org/resources/interactive-tools/product-gallery/",
+            "used_for": "Lifecycle 'virtual water' comparisons (paper, tea, burger)"
+        }
+    ],
+    "how_to_cite": "PharmaTools.AI AI Water & Energy Calculator, methodology 2026-09. https://www.pharmatools.ai/water-consumption-calculator",
+    "methodology_version": "2026-09",
+    "reviewed": "September 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+}

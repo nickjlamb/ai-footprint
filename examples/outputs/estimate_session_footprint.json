@@ -1,0 +1,42 @@
+{
+    "inputs": {
+        "input_tokens": 200000,
+        "output_tokens": 40000,
+        "cached_input_tokens": 3000000,
+        "model_class": "frontier",
+        "boundary": "comprehensive"
+    },
+    "central": {
+        "energy_wh": 79.333,
+        "water_ml": 325.267,
+        "energy": "79.3 Wh",
+        "water": "325 mL"
+    },
+    "range": {
+        "energy_wh": [
+            23.8,
+            238.0
+        ],
+        "water_ml": [
+            97.58,
+            975.8
+        ],
+        "water": "97.6 mL \u2013 976 mL"
+    },
+    "equivalent_chat_prompts": 233.3,
+    "water_equivalents": {
+        "teaspoons": 66.4,
+        "bottles_500ml": 0.65,
+        "shower": "2 sec of showering"
+    },
+    "confidence": "low \u2013 indicative only",
+    "assumptions": [
+        "Order-of-magnitude estimate. Calibrated so ~1,000 input + ~400 output tokens on a frontier model = 0.34 Wh (one typical chat prompt).",
+        "Assumes output tokens cost ~5x input tokens and cache reads ~0.1x. Real values depend on model, hardware, batching and data centre.",
+        "Range is 0.3x\u20133x the central estimate.",
+        "Pass the SUM of tokens across every model call in the session \u2013 agentic loops resend the context each turn."
+    ],
+    "methodology_version": "2026-09",
+    "reviewed": "September 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+}

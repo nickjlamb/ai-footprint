@@ -90,3 +90,4 @@ def test_tighten_cors_still_strict(client):
 
 def test_health(client):
     assert client.get("/health").json() == {"ok": True}
+    assert client.head("/health").status_code == 200

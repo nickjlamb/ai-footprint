@@ -1,10 +1,37 @@
 name: ci
+
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check .
+      - name: Versions agree (server.json, CHANGELOG, CITATION, README badge)
+        run: python scripts/check_release.py
+
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     defaults:
       run:
         working-directory: server
@@ -12,8 +39,34 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: server/requirements*.txt
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - run: python -m pytest -q
         env:
           MOCK: "1"
+
+  e2e:
+    name: end-to-end over MCP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: server/requirements*.txt
+      - run: pip install -r server/requirements.txt
+      - name: Start the server
+        working-directory: server
+        run: |
+          MOCK=1 uvicorn main:app --port 8000 &
+          for i in $(seq 1 30); do curl -sf http://localhost:8000/health && exit 0; sleep 1; done
+          exit 1
+      - name: Call every tool with the example client
+        run: python examples/mcp_client.py http://localhost:8000/mcp
+      - name: JSON API smoke test
+        run: |
+          curl -sf "http://localhost:8000/api/footprint?queries_per_day=25" | grep -q '"34.8 mL"'
+          test "$(curl -s -o /dev/null -w '%{http_code}' 'http://localhost:8000/api/footprint?queries_per_day=5&usage=huge')" = 400

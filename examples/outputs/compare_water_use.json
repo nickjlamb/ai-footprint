@@ -1,0 +1,39 @@
+{
+    "water": "500 mL",
+    "everyday": {
+        "teaspoons": 102.0,
+        "bottles_500ml": 1.0,
+        "shower": "3 sec of showering"
+    },
+    "lifecycle_comparisons": [
+        {
+            "item": "sheet of A4 paper (lifecycle)",
+            "item_water": "10 L",
+            "fraction_of_item": 0.05,
+            "plain": "0.05 of one sheet of A4 paper (lifecycle)"
+        },
+        {
+            "item": "California almond (total footprint)",
+            "item_water": "12 L",
+            "fraction_of_item": 0.042,
+            "plain": "0.042 of one California almond (total footprint)"
+        },
+        {
+            "item": "cup of tea (lifecycle)",
+            "item_water": "30 L",
+            "fraction_of_item": 0.017,
+            "plain": "0.017 of one cup of tea (lifecycle)"
+        },
+        {
+            "item": "beef burger (lifecycle)",
+            "item_water": "2.4 m\u00b3",
+            "fraction_of_item": 0.00021,
+            "plain": "0.00021 of one beef burger (lifecycle)"
+        }
+    ],
+    "equivalent_text_prompts_comprehensive": 359,
+    "caveat": "Lifecycle items are full 'virtual water' footprints (including rainwater for crops), a much wider boundary than AI operational water. Use them for scale, not like-for-like. Almond irrigation and data-centre cooling also draw on different water supplies.",
+    "methodology_version": "2026-09",
+    "reviewed": "September 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+}

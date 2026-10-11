@@ -1,0 +1,42 @@
+{
+    "inputs": {
+        "queries_per_day": 30.0,
+        "usage": "simple",
+        "boundary": "comprehensive",
+        "days": 250
+    },
+    "per_query": {
+        "energy_wh": 0.34,
+        "water_ml": 1.39
+    },
+    "per_day": {
+        "energy_wh": 10.2,
+        "water_ml": 41.8,
+        "energy": "10.2 Wh",
+        "water": "41.8 mL"
+    },
+    "total": {
+        "energy_wh": 2550.0,
+        "water_ml": 10455.0,
+        "energy": "2.6 kWh",
+        "water": "10.5 L",
+        "energy_equivalents": {
+            "tv_100w": "25.5 hrs of TV",
+            "phone_charges": "170 phone charges"
+        },
+        "water_equivalents": {
+            "teaspoons": 2133.7,
+            "bottles_500ml": 20.91,
+            "shower": "1.2 min of showering"
+        }
+    },
+    "assumptions": [
+        "Usage tier: Simple text \u2013 chat, search, summaries (0.34 Wh per prompt).",
+        "Boundary: Onsite cooling plus water consumed generating the electricity (~4.1 mL/Wh; US grid average per Li et al.).",
+        "Chat-style prompts (one prompt, one response). Agentic sessions can be far higher \u2013 use estimate_session_footprint.",
+        "Uses the most conservative (highest) of the published onsite water intensities. Excludes model training."
+    ],
+    "methodology_version": "2026-09",
+    "reviewed": "September 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+}

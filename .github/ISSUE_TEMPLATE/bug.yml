@@ -1,0 +1,42 @@
+name: Bug report
+description: A tool or endpoint returned something wrong, confusing or misleading.
+labels: [bug]
+body:
+  - type: textarea
+    id: call
+    attributes:
+      label: Tool call or request
+      description: The tool and arguments, or the URL you requested.
+      placeholder: estimate_session_footprint(input_tokens=200000, output_tokens=40000)
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What came back
+      description: The response, or the relevant part of it.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - Hosted endpoint
+        - Self-hosted
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Client
+      description: For MCP, the client and version. For the API, what made the request.
+      placeholder: Claude Desktop, Cursor, curl, ...
