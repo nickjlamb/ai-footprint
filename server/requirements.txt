@@ -1,0 +1,4 @@
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+anthropic>=0.40.0
+mcp>=1.12,<2

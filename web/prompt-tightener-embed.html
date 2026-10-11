@@ -1,0 +1,203 @@
+<!-- PharmaTools.AI – Prompt Tightener. Card box, gutters and spacing come from the page's shared .aiwf / .aiwf-card styles -->
+<style>
+#aiwf-pt{font-family:Inter,sans-serif;color:#111827}
+#aiwf-pt{scroll-margin-top:96px}
+.aiwf .pt-jump{margin:1rem 0 0;font-size:.95rem}
+.aiwf .pt-jump a{color:#2036f5;font-weight:600;text-decoration:none}
+.aiwf .pt-jump a:hover{text-decoration:underline}
+#aiwf-pt *{box-sizing:border-box}
+#aiwf-pt .pt-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#2036f5;margin:0 0 8px}
+#aiwf-pt h2{line-height:1.25;margin:0 0 8px}
+#aiwf-pt .pt-sub{color:#6b7280;font-size:16px;line-height:1.55;margin:0 0 20px;max-width:640px}
+#aiwf-pt label{display:block;font-size:14px;font-weight:600;color:#374151;margin:0 0 8px}
+#aiwf-pt textarea{width:100%;min-height:96px;resize:vertical;font:inherit;font-size:15px;line-height:1.5;color:#111827;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff}
+#aiwf-pt textarea:focus{outline:none;border-color:#2036f5;box-shadow:0 0 0 3px rgba(32,54,245,.15)}
+#aiwf-pt .pt-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin:8px 0 0}
+#aiwf-pt .pt-count{font-size:12px;color:#9ca3af}
+#aiwf-pt .pt-count.over{color:#b91c1c}
+#aiwf-pt .pt-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0 0}
+#aiwf-pt .pt-btn{font:inherit;font-size:16px;font-weight:600;color:#fff;background:#2036f5;border:0;border-radius:10px;padding:12px 22px;cursor:pointer}
+#aiwf-pt .pt-btn:hover{background:#1a2bd0}
+#aiwf-pt .pt-btn:disabled{opacity:.55;cursor:default}
+#aiwf-pt .pt-note{font-size:13px;color:#6b7280;line-height:1.5;margin:0;flex:1;min-width:220px}
+#aiwf-pt .pt-warn{display:none;margin:12px 0 0;padding:10px 14px;border-radius:10px;background:#fef3c7;color:#92400e;font-size:14px;line-height:1.5}
+#aiwf-pt .pt-err{display:none;margin:12px 0 0;padding:10px 14px;border-radius:10px;background:#fee2e2;color:#991b1b;font-size:14px}
+#aiwf-pt .pt-out{display:none;margin:24px 0 0;border-top:1px solid #e5e7eb;padding-top:24px}
+#aiwf-pt .pt-box{position:relative;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px 16px 52px;font-size:15px;line-height:1.6;color:#111827;white-space:pre-wrap;word-wrap:break-word}
+#aiwf-pt .pt-box mark{background:#e0e7ff;color:#1e1b8a;border-radius:4px;padding:0 3px}
+#aiwf-pt .pt-copy{position:absolute;right:12px;bottom:12px;font:inherit;font-size:13px;font-weight:600;border:1px solid #d1d5db;background:#fff;color:#374151;border-radius:8px;padding:6px 12px;cursor:pointer}
+#aiwf-pt .pt-added{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0 0;font-size:13px;color:#6b7280}
+#aiwf-pt .pt-tag{background:#eef0fe;color:#2036f5;border-radius:999px;padding:3px 10px;font-weight:500}
+#aiwf-pt .pt-hint{font-size:13px;color:#6b7280;margin:8px 0 0}
+#aiwf-pt .pt-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 0}
+#aiwf-pt .pt-stat{border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px}
+#aiwf-pt .pt-k{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin:0 0 6px}
+#aiwf-pt .pt-v{font-size:22px;font-weight:700;color:#111827;margin:0}
+#aiwf-pt .pt-d{font-size:13px;color:#6b7280;margin:4px 0 0;line-height:1.4}
+#aiwf-pt .pt-stat.good{border-color:#a7f3d0;background:#ecfdf5}
+#aiwf-pt .pt-stat.good .pt-v{color:#047857}
+#aiwf-pt .pt-stat.meh{border-color:#fde68a;background:#fffbeb}
+#aiwf-pt .pt-stat.meh .pt-v{color:#b45309}
+#aiwf-pt .pt-verdict{font-size:15px;line-height:1.55;color:#374151;margin:16px 0 0}
+#aiwf-pt .pt-method{font-size:12.5px;line-height:1.5;color:#9ca3af;margin:12px 0 0}
+@media (max-width:640px){#aiwf-pt .pt-stats{grid-template-columns:1fr}}
+</style>
+
+<div class="aiwf">
+<section id="aiwf-pt" class="aiwf-card" aria-labelledby="aiwf-pt-h">
+  <p class="pt-eyebrow">Try it · AI prompt tightener</p>
+  <h2 id="aiwf-pt-h" class="aiwf-section-title">Make your first prompt the only one</h2>
+  <p class="pt-sub">Paste a draft prompt and a small AI model rewrites it so you get a usable answer first time. We also show what the rewrite itself cost – because it isn't free either.</p>
+
+  <label for="pt-in">Your draft prompt</label>
+  <textarea id="pt-in" maxlength="1500" placeholder="Paste or type your prompt here"></textarea>
+  <div class="pt-row">
+    <span class="pt-count" id="pt-count">0 / 1500</span>
+  </div>
+  <div class="pt-warn" id="pt-warn" role="alert"></div>
+
+  <div class="pt-actions">
+    <button type="button" class="pt-btn" id="pt-go">Tighten my prompt</button>
+    <p class="pt-note">Opt-in: unlike the calculator above, this sends your text to Anthropic's Claude API via our server. It isn't stored. Don't paste personal or confidential information.</p>
+  </div>
+  <div class="pt-err" id="pt-err" role="alert"></div>
+
+  <div class="pt-out" id="pt-out" aria-live="polite">
+    <label>Tightened prompt</label>
+    <div class="pt-box"><span id="pt-text"></span><button type="button" class="pt-copy" id="pt-copy">Copy</button></div>
+    <div class="pt-added" id="pt-added"></div>
+    <p class="pt-hint" id="pt-hint"></p>
+    <div class="pt-stats">
+      <div class="pt-stat"><p class="pt-k">This rewrite cost</p><p class="pt-v" id="pt-cost"></p><p class="pt-d" id="pt-cost-d"></p></div>
+      <div class="pt-stat"><p class="pt-k">Follow-ups avoided</p><p class="pt-v" id="pt-fu"></p><p class="pt-d" id="pt-fu-d"></p></div>
+      <div class="pt-stat" id="pt-net-card"><p class="pt-k">Net water</p><p class="pt-v" id="pt-net"></p><p class="pt-d" id="pt-net-d"></p></div>
+    </div>
+    <p class="pt-verdict" id="pt-verdict"></p>
+    <p class="pt-method">How we count: every prompt, including the rewrite, is costed at the page's comprehensive figure for one text prompt (~0.34 Wh, ~1.4 mL). That is an upper bound for the small model used here. Follow-ups are counted as single prompts, ignoring the extra cost of reprocessing the conversation – so real savings are likely larger. The follow-up count is the model's own estimate.</p>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  var API = 'https://prompt-tightener-production.up.railway.app/tighten';
+  var WH = 0.34, ML = 0.34 * 4.1, MAX = 1500;
+  var $ = function(id){ return document.getElementById(id); };
+  var inp=$('pt-in'), go=$('pt-go'), warn=$('pt-warn'), err=$('pt-err'), out=$('pt-out'), count=$('pt-count');
+  var pendingWarning = false;
+
+  var PII = [
+    [/[^\s@]+@[^\s@]+\.[a-z]{2,}/i, 'an email address'],
+    [/\b\d{3}[\s-]?\d{3}[\s-]?\d{4}\b/, 'what looks like an NHS or phone number'],
+    [/\b(0?[1-9]|[12]\d|3[01])[\/.-](0?[1-9]|1[0-2])[\/.-](19|20)\d{2}\b/, 'a date of birth'],
+    [/\b(Mr|Mrs|Ms|Miss|Dr)\.?\s+[A-Z][a-z]+/, 'a personal name'],
+    [/\b(patient|pt)\s+(name|id|number|no\.?)\b/i, 'patient identifiers']
+  ];
+
+  function fmt(ml){ return ml < 10 ? ml.toFixed(1) + ' mL' : Math.round(ml) + ' mL'; }
+  function show(el, txt){ el.textContent = txt; el.style.display = txt ? 'block' : 'none'; }
+  function upd(){
+    var n = inp.value.length;
+    count.textContent = n + ' / ' + MAX;
+    count.className = 'pt-count' + (n > MAX ? ' over' : '');
+    if (pendingWarning){ pendingWarning = false; show(warn,''); go.textContent = 'Tighten my prompt'; }
+  }
+  inp.addEventListener('input', upd);
+
+  // Render text safely, highlighting [placeholders]
+  function render(el, txt){
+    el.textContent = '';
+    txt.split(/(\[[^\]\n]{1,80}\])/).forEach(function(part){
+      if (/^\[.*\]$/.test(part)){ var m = document.createElement('mark'); m.textContent = part; el.appendChild(m); }
+      else el.appendChild(document.createTextNode(part));
+    });
+  }
+
+  go.addEventListener('click', function(){
+    var t = inp.value.trim();
+    show(err,'');
+    if (t.length < 8){ show(err, 'Type a prompt of at least a few words.'); return; }
+    if (!pendingWarning){
+      var hit = PII.filter(function(p){ return p[0].test(t); }).map(function(p){ return p[1]; });
+      if (hit.length){
+        pendingWarning = true;
+        show(warn, 'This looks like it may contain ' + hit.join(', ') + '. Remove it before sending, or use a [placeholder] instead.');
+        go.textContent = 'Send anyway';
+        return;
+      }
+    }
+    pendingWarning = false; show(warn,'');
+    go.disabled = true; go.textContent = 'Tightening…';
+    fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:t}) })
+      .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.detail || 'Something went wrong.'); return j; }); })
+      .then(function(d){ result(d); if (window.plausible) window.plausible('Prompt Tightened'); })
+      .catch(function(e){ show(err, e.message && e.message !== 'Failed to fetch' ? e.message : 'Couldn\'t reach the rewrite service. Please try again.'); })
+      .then(function(){ go.disabled = false; go.textContent = 'Tighten my prompt'; });
+  });
+
+  function result(d){
+    render($('pt-text'), d.rewritten);
+    var a = $('pt-added'); a.textContent = '';
+    if (d.added && d.added.length){
+      a.appendChild(document.createTextNode('Added: '));
+      d.added.forEach(function(x){ var s = document.createElement('span'); s.className = 'pt-tag'; s.textContent = x; a.appendChild(s); });
+    }
+    show($('pt-hint'), /\[[^\]]+\]/.test(d.rewritten) ? 'Fill in the highlighted [placeholders] before you use it – only you know those details.' : '');
+    var n = d.likely_followups || 0, net = (n - 1) * ML;
+    $('pt-cost').textContent = '≈ ' + fmt(ML);
+    $('pt-cost-d').textContent = WH + ' Wh · one small-model call';
+    $('pt-fu').textContent = n;
+    $('pt-fu-d').textContent = n ? '≈ ' + fmt(n * ML) + ' and ' + (n * WH).toFixed(1) + ' Wh avoided' : 'Your draft was already specific';
+    var card = $('pt-net-card');
+    if (n >= 2){
+      card.className = 'pt-stat good';
+      $('pt-net').textContent = '− ' + fmt(net);
+      $('pt-net-d').textContent = 'saved, after paying for the rewrite';
+      $('pt-verdict').textContent = 'Worth it: the rewrite should pay for itself. The bigger saving is your time – ' + n + ' fewer rounds of back-and-forth.';
+    } else if (n === 1){
+      card.className = 'pt-stat meh';
+      $('pt-net').textContent = '≈ 0 mL';
+      $('pt-net-d').textContent = 'break-even';
+      $('pt-verdict').textContent = 'Break-even: your draft was nearly there. Adding the details yourself next time costs nothing.';
+    } else {
+      card.className = 'pt-stat meh';
+      $('pt-net').textContent = '+ ' + fmt(ML);
+      $('pt-net-d').textContent = 'extra – the rewrite cost more than it saved';
+      $('pt-verdict').textContent = 'Honest result: your prompt was already precise, so this rewrite added to your footprint rather than cutting it. Skip the tool for prompts like this one.';
+    }
+    out.style.display = 'block';
+  }
+
+  // Entry points elsewhere on the page: under the annual results and in the "Be Precise Up Front" tip
+  function addJumps(){
+    var spots = [
+      ['.aiwf-annual', 'Want to cut this? Tighten your next prompt ↓', 'results', null],
+      [null, 'Try the prompt tightener ↑', 'tip', 'Be Precise Up Front']
+    ];
+    spots.forEach(function(sp){
+      var host = sp[0] ? document.querySelector(sp[0]) : null;
+      if (sp[3]){ var h = [].filter.call(document.querySelectorAll('.aiwf h3'), function(x){ return x.textContent.trim() === sp[3]; })[0]; host = h && h.parentElement; }
+      if (!host || host.querySelector('.pt-jump')) return;
+      var p = document.createElement('p'); p.className = 'pt-jump';
+      var a = document.createElement('a'); a.href = '#aiwf-pt'; a.textContent = sp[1];
+      a.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        var y = $('aiwf-pt').getBoundingClientRect().top + window.pageYOffset - 96, done = false;
+        var focus = function(){ if (!done){ done = true; inp.focus({preventScroll:true}); } };
+        if ('onscrollend' in window) window.addEventListener('scrollend', focus, {once:true});
+        setTimeout(focus, 1500);
+        window.scrollTo({top: y, behavior: 'smooth'});
+        if (window.plausible) window.plausible('Tightener Link', {props:{from: sp[2]}});
+      });
+      p.appendChild(a); host.appendChild(p);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addJumps); else addJumps();
+
+  $('pt-copy').addEventListener('click', function(){
+    var b = this, txt = $('pt-text').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function(){ b.textContent = 'Copied'; }, function(){ b.textContent = 'Select & copy'; });
+    setTimeout(function(){ b.textContent = 'Copy'; }, 1800);
+  });
+})();
+</script>
