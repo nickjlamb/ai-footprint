@@ -2,6 +2,9 @@ version: 2
 updates:
   - package-ecosystem: pip
     directory: /server
+    ignore:
+      - dependency-name: "mcp"
+        update-types: ["version-update:semver-major"]
     schedule:
       interval: monthly
     groups:
