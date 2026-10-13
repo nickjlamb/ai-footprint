@@ -80,7 +80,7 @@
 
 <script>
 (function(){
-  var API = 'https://prompt-tightener-production.up.railway.app/tighten';
+  var API = 'https://footprint.pharmatools.ai/tighten';
   var WH = 0.34, ML = 0.34 * 4.1, MAX = 1500;
   var $ = function(id){ return document.getElementById(id); };
   var inp=$('pt-in'), go=$('pt-go'), warn=$('pt-warn'), err=$('pt-err'), out=$('pt-out'), count=$('pt-count');
@@ -130,7 +130,7 @@
     go.disabled = true; go.textContent = 'Tightening…';
     fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:t}) })
       .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.detail || 'Something went wrong.'); return j; }); })
-      .then(function(d){ result(d); if (window.plausible) window.plausible('Prompt Tightened'); })
+      .then(function(d){ result(d); if (window.plausible) window.plausible('Prompt Tightened', {props:{followups: String(d.likely_followups || 0)}}); })
       .catch(function(e){ show(err, e.message && e.message !== 'Failed to fetch' ? e.message : 'Couldn\'t reach the rewrite service. Please try again.'); })
       .then(function(){ go.disabled = false; go.textContent = 'Tighten my prompt'; });
   });
@@ -194,9 +194,19 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addJumps); else addJumps();
 
+  // Clicks onward from this page: to the MCP server page, and to the Labs project tiles
+  document.addEventListener('click', function(e){
+    if (!window.plausible || !e.target.closest) return;
+    var lab = e.target.closest('a[data-lab]');
+    if (lab){ window.plausible('Lab Link', {props:{project: lab.getAttribute('data-lab')}}); return; }
+    var a = e.target.closest('a[href*="/mcp"]');
+    if (a) window.plausible('MCP Link', {props:{text: (a.textContent || '').trim().slice(0, 60)}});
+  }, true);
+
   $('pt-copy').addEventListener('click', function(){
     var b = this, txt = $('pt-text').textContent;
     (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function(){ b.textContent = 'Copied'; }, function(){ b.textContent = 'Select & copy'; });
+    if (window.plausible) window.plausible('Tightened Prompt Copied');
     setTimeout(function(){ b.textContent = 'Copy'; }, 1800);
   });
 })();
