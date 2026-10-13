@@ -9,6 +9,12 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-10-13
+
+### Fixed
+
+- Each tool's title is now also set in `annotations.title`, where Claude's Connectors Directory looks for it. A test checks every tool has a title and read-only annotations.
+
 ## [1.0.2] - 2026-10-13
 
 ### Changed
@@ -49,7 +55,8 @@ First public release.
 
 - `2026-09`: energy per prompt from 2025 vendor disclosures (0.34 Wh simple, 1 Wh mixed, 3 Wh intensive); water at ~1.0 mL/Wh onsite and ~4.1 mL/Wh comprehensive. Typical text prompt ~0.34 mL onsite, ~1.4 mL comprehensive.
 
-[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/nickjlamb/ai-footprint/releases/tag/v1.0.0

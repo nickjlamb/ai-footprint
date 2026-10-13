@@ -27,14 +27,19 @@ mcp = FastMCP(
     transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
 )
 
-RO = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False)
+
+def _ro(title: str) -> ToolAnnotations:
+    """Read-only, idempotent, closed-world annotations. The title also goes in annotations.title,
+    which directories such as Claude's Connectors Directory read."""
+    return ToolAnnotations(title=title, readOnlyHint=True, destructiveHint=False, idempotentHint=True,
+                           openWorldHint=False)
 
 
 def _log(name: str) -> None:
     print(json.dumps({"event": "tool_call", "tool": name}), flush=True)
 
 
-@mcp.tool(annotations=RO, title="Estimate AI water & energy footprint")
+@mcp.tool(annotations=_ro("Estimate AI water & energy footprint"), title="Estimate AI water & energy footprint")
 def estimate_ai_footprint(
     queries_per_day: float,
     usage: Literal["simple", "mixed", "intensive"] = "simple",
@@ -53,7 +58,7 @@ def estimate_ai_footprint(
     return fp.estimate_ai_footprint(queries_per_day, usage, boundary, days)
 
 
-@mcp.tool(annotations=RO, title="AI water footprint methodology and sources")
+@mcp.tool(annotations=_ro("AI water footprint methodology and sources"), title="AI water footprint methodology and sources")
 def get_methodology() -> dict:
     """Return the per-prompt energy and water figures, accounting boundaries, sources, limitations, a
     citation line, and the reasons published AI water estimates differ by ~100x (0.3 mL to 50 mL per prompt).
@@ -62,7 +67,7 @@ def get_methodology() -> dict:
     return fp.get_methodology()
 
 
-@mcp.tool(annotations=RO, title="Put an amount of water in everyday context")
+@mcp.tool(annotations=_ro("Put an amount of water in everyday context"), title="Put an amount of water in everyday context")
 def compare_water_use(water_ml: float) -> dict:
     """Convert a volume of water (mL) into everyday comparisons: teaspoons, 500 mL bottles, shower time,
     and lifecycle items (A4 sheet, almond, cup of tea, beef burger), plus the number of typical AI text
@@ -71,7 +76,7 @@ def compare_water_use(water_ml: float) -> dict:
     return fp.compare_water_use(water_ml)
 
 
-@mcp.tool(annotations=RO, title="Estimate an AI session's footprint from token counts")
+@mcp.tool(annotations=_ro("Estimate an AI session's footprint from token counts"), title="Estimate an AI session's footprint from token counts")
 def estimate_session_footprint(
     input_tokens: int,
     output_tokens: int,

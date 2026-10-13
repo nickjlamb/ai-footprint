@@ -88,6 +88,18 @@ def test_tighten_cors_still_strict(client):
     assert r.headers["access-control-allow-origin"] == "https://www.pharmatools.ai"
 
 
+def test_every_tool_has_title_and_read_only_annotations():
+    import asyncio
+
+    from mcp_tools import mcp
+
+    tools = asyncio.run(mcp.list_tools())
+    assert len(tools) == 4
+    for t in tools:
+        assert t.title and t.annotations.title == t.title
+        assert t.annotations.readOnlyHint is True and t.annotations.destructiveHint is False
+
+
 def test_root_redirects_to_docs(client):
     r = client.get("/", follow_redirects=False)
     assert r.status_code == 302
