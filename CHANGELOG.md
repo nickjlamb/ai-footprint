@@ -9,6 +9,14 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-13
+
+### Changed
+
+- Hosted endpoint moved to `https://footprint.pharmatools.ai/mcp`. The previous Railway address keeps working.
+- Server instructions and the `get_methodology` description now describe what the tools return, rather than telling the model how to quote results.
+- Privacy section added to the README, covering what the hosted server logs and keeps.
+
 ## [1.0.0] - 2026-10-11
 
 First public release.
@@ -34,5 +42,6 @@ First public release.
 
 - `2026-09`: energy per prompt from 2025 vendor disclosures (0.34 Wh simple, 1 Wh mixed, 3 Wh intensive); water at ~1.0 mL/Wh onsite and ~4.1 mL/Wh comprehensive. Typical text prompt ~0.34 mL onsite, ~1.4 mL comprehensive.
 
-[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/nickjlamb/ai-footprint/releases/tag/v1.0.0

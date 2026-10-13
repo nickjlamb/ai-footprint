@@ -19,7 +19,7 @@ Include what you found, how to reproduce it, and what an attacker could do with 
 In scope:
 
 - The server code in this repository.
-- The hosted endpoint at `prompt-tightener-production.up.railway.app`: ways to bypass the CORS or rate-limit controls, reach `/tighten` from another origin, make the server log or return data it shouldn't, or exhaust its resources with small requests.
+- The hosted endpoint at `footprint.pharmatools.ai`: ways to bypass the CORS or rate-limit controls, reach `/tighten` from another origin, make the server log or return data it shouldn't, or exhaust its resources with small requests.
 - Prompt injection through `/tighten` that gets the model to do anything other than rewrite the prompt.
 
 Out of scope:

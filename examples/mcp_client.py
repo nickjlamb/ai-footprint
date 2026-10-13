@@ -11,7 +11,7 @@ import sys
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://prompt-tightener-production.up.railway.app/mcp"
+URL = sys.argv[1] if len(sys.argv) > 1 else "https://footprint.pharmatools.ai/mcp"
 
 CALLS = [
     ("estimate_ai_footprint", {"queries_per_day": 30, "days": 250}),

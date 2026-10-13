@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The JSON API from the shell. Every endpoint is a plain GET with open CORS.
 set -euo pipefail
-B="${AI_FOOTPRINT_URL:-https://prompt-tightener-production.up.railway.app}"
+B="${AI_FOOTPRINT_URL:-https://footprint.pharmatools.ai}"
 
 # 30 text prompts a day over a 250-day working year
 curl -s "$B/api/footprint?queries_per_day=30&days=250"

@@ -1,6 +1,6 @@
 // The JSON API from Node 18+ or a browser. No dependencies, open CORS.
 //   node examples/api.mjs
-const BASE = process.env.AI_FOOTPRINT_URL ?? "https://prompt-tightener-production.up.railway.app";
+const BASE = process.env.AI_FOOTPRINT_URL ?? "https://footprint.pharmatools.ai";
 
 async function get(path, params = {}) {
   const res = await fetch(`${BASE}${path}?${new URLSearchParams(params)}`);

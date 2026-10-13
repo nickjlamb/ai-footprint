@@ -9,7 +9,7 @@
   <a href="https://github.com/nickjlamb/ai-footprint/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/nickjlamb/ai-footprint/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://github.com/nickjlamb/ai-footprint/releases"><img alt="Release" src="https://img.shields.io/github/v/release/nickjlamb/ai-footprint?sort=semver&color=0d7377"></a>
   <a href="https://registry.modelcontextprotocol.io/?q=ai-footprint"><img alt="MCP Registry" src="https://img.shields.io/badge/MCP_Registry-io.github.nickjlamb%2Fai--footprint-6E56CF"></a>
-  <a href="https://prompt-tightener-production.up.railway.app/health"><img alt="Hosted endpoint" src="https://img.shields.io/website?url=https%3A%2F%2Fprompt-tightener-production.up.railway.app%2Fhealth&label=hosted%20endpoint&up_message=online&down_message=offline"></a>
+  <a href="https://footprint.pharmatools.ai/health"><img alt="Hosted endpoint" src="https://img.shields.io/website?url=https%3A%2F%2Ffootprint.pharmatools.ai%2Fhealth&label=hosted%20endpoint&up_message=online&down_message=offline"></a>
   <img alt="Python 3.10 to 3.13" src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-3776AB">
   <a href="https://www.pharmatools.ai/water-consumption-calculator"><img alt="Methodology 2026-09" src="https://img.shields.io/badge/methodology-2026--09-0d7377"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
@@ -40,13 +40,13 @@ Published per-prompt estimates of AI water use range from 0.3 mL to 50 mL. Most 
 **Under 60 seconds, from any MCP client.** Add the hosted endpoint:
 
 ```
-https://prompt-tightener-production.up.railway.app/mcp
+https://footprint.pharmatools.ai/mcp
 ```
 
 **Claude Code**
 
 ```bash
-claude mcp add --transport http ai-footprint https://prompt-tightener-production.up.railway.app/mcp
+claude mcp add --transport http ai-footprint https://footprint.pharmatools.ai/mcp
 ```
 
 **Claude Desktop and claude.ai:** Settings → Connectors → **Add custom connector**, then paste the URL.
@@ -56,7 +56,7 @@ claude mcp add --transport http ai-footprint https://prompt-tightener-production
 ```json
 {
   "mcpServers": {
-    "ai-footprint": { "url": "https://prompt-tightener-production.up.railway.app/mcp" }
+    "ai-footprint": { "url": "https://footprint.pharmatools.ai/mcp" }
   }
 }
 ```
@@ -78,7 +78,7 @@ estimate_ai_footprint(queries_per_day=30, days=250)
 **Not using MCP?** The same tools are plain GET endpoints:
 
 ```bash
-curl "https://prompt-tightener-production.up.railway.app/api/footprint?queries_per_day=30&days=250"
+curl "https://footprint.pharmatools.ai/api/footprint?queries_per_day=30&days=250"
 ```
 
 ## Tools
@@ -202,6 +202,10 @@ examples/             MCP client, JS and curl examples, captured outputs
 web/                  calculator-page embed for the tightener
 server.json           MCP Registry entry
 ```
+
+## Privacy
+
+The hosted server keeps no record of what you ask. Its logs contain the name of the tool or endpoint called, nothing else: no inputs, prompts or IP addresses. Client IP addresses are held in memory only to enforce rate limits. They are never logged or written to disk, and are discarded when the server restarts. There's no database and no account. The server runs on [Railway](https://railway.com), and nothing is shared with anyone else. Full policy: [pharmatools.ai/privacy-policy](https://www.pharmatools.ai/privacy-policy#ai-footprint). Questions: info@pharmatools.ai.
 
 ## Contributing
 

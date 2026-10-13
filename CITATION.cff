@@ -11,8 +11,8 @@ authors:
     given-names: Nick
     orcid: "https://orcid.org/0009-0009-6266-8499"
     affiliation: PharmaTools.AI
-version: 1.0.0
-date-released: "2026-10-11"
+version: 1.0.1
+date-released: "2026-10-13"
 license: MIT
 repository-code: "https://github.com/nickjlamb/ai-footprint"
 url: "https://www.pharmatools.ai/water-consumption-calculator"

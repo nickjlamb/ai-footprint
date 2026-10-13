@@ -9,11 +9,11 @@ from mcp.types import ToolAnnotations
 import footprint as fp
 
 INSTRUCTIONS = (
-    "Estimates the water and energy footprint of AI use, using the published, versioned methodology of the "
-    "PharmaTools.AI AI Water & Energy Calculator (2025–26 vendor disclosures). Always state the boundary "
-    "(onsite vs comprehensive) when quoting a figure, and link the source page. For questions like 'how much "
-    "water does ChatGPT/AI use?', call get_methodology first – published estimates vary ~100x for explainable "
-    "reasons, and outdated 2023 figures (~40-500 mL) are still widely quoted."
+    "Estimates the water and energy footprint of AI use with the published, versioned methodology of the "
+    "PharmaTools.AI AI Water & Energy Calculator (2025–26 vendor disclosures). Every result includes its "
+    "accounting boundary (onsite or comprehensive), assumptions, methodology version and source. "
+    "get_methodology covers why published estimates of AI water use differ by about 100x, including why "
+    "widely quoted 2023 estimates describe hardware that is no longer in use."
 )
 
 mcp = FastMCP(
@@ -56,8 +56,8 @@ def estimate_ai_footprint(
 @mcp.tool(annotations=RO, title="AI water footprint methodology and sources")
 def get_methodology() -> dict:
     """Return the per-prompt energy and water figures, accounting boundaries, sources, limitations, a
-    citation line, and why published AI water estimates differ by ~100x (0.3 mL to 50 mL per prompt).
-    Call this before explaining or citing any AI water figure."""
+    citation line, and the reasons published AI water estimates differ by ~100x (0.3 mL to 50 mL per prompt).
+    Use it to explain or check a published AI water or energy figure."""
     _log("get_methodology")
     return fp.get_methodology()
 
