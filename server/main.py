@@ -20,7 +20,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel
 
 import footprint as fp
@@ -42,6 +42,7 @@ ALLOWED_ORIGINS = [
 ]
 
 PUBLIC_PER_IP_PER_MIN = int(os.getenv("PUBLIC_PER_IP_PER_MIN", "120"))
+DOCS_URL = os.getenv("DOCS_URL", "https://www.pharmatools.ai/mcp#footprint")
 
 
 @asynccontextmanager
@@ -125,6 +126,12 @@ if not MOCK:
 
 class TightenIn(BaseModel):
     prompt: str
+
+
+@api.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+def root():
+    # Someone opening the bare domain in a browser lands on the human-readable docs.
+    return RedirectResponse(DOCS_URL, status_code=302)
 
 
 @api.api_route("/health", methods=["GET", "HEAD"])  # HEAD for uptime monitors and status badges

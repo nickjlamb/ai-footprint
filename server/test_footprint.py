@@ -88,6 +88,12 @@ def test_tighten_cors_still_strict(client):
     assert r.headers["access-control-allow-origin"] == "https://www.pharmatools.ai"
 
 
+def test_root_redirects_to_docs(client):
+    r = client.get("/", follow_redirects=False)
+    assert r.status_code == 302
+    assert r.headers["location"] == "https://www.pharmatools.ai/mcp#footprint"
+
+
 def test_health(client):
     assert client.get("/health").json() == {"ok": True}
     assert client.head("/health").status_code == 200

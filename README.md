@@ -174,6 +174,7 @@ MOCK=1 uvicorn main:app --port 8000
 | `GLOBAL_PER_DAY` | `1500` | Tightener daily cap across all clients |
 | `MAX_INPUT_CHARS` | `1500` | Tightener input cap |
 | `PUBLIC_PER_IP_PER_MIN` | `120` | Limit for `/mcp` and `/api/*` |
+| `DOCS_URL` | `https://www.pharmatools.ai/mcp#footprint` | Where `/` redirects |
 
 </details>
 
