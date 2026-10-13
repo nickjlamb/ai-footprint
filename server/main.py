@@ -61,9 +61,23 @@ _day_key = [time.strftime("%Y-%m-%d", time.gmtime())]
 _global = [0]
 
 
+# Rate limits key on the client address in X-Forwarded-For. Railway's edge adds its own
+# entry at the right, so the client is the entry just before the last PROXY_ENTRIES ones.
+# Entries further left can be set by the caller and are ignored, so a forged header can't
+# be used to dodge the limits. If there are fewer entries, the leftmost is the client.
+PROXY_ENTRIES = max(0, int(os.environ.get("PROXY_ENTRIES", "1")))
+MAX_TRACKED_IPS = 50_000  # keeps the in-memory rate-limit maps bounded
+
+
+def _ip_from(xff: str, peer: str) -> str:
+    hops = [h.strip() for h in xff.split(",") if h.strip()]
+    if not hops:
+        return peer or "?"
+    return hops[max(len(hops) - 1 - PROXY_ENTRIES, 0)]
+
+
 def _client_ip(req: Request) -> str:
-    fwd = req.headers.get("x-forwarded-for", "")
-    return fwd.split(",")[0].strip() or (req.client.host if req.client else "?")
+    return _ip_from(req.headers.get("x-forwarded-for", ""), req.client.host if req.client else "")
 
 
 def _check_limits(ip: str) -> None:
@@ -74,6 +88,10 @@ def _check_limits(ip: str) -> None:
             _day_key[0] = today
             _day.clear()
             _global[0] = 0
+        if len(_minute) > MAX_TRACKED_IPS:
+            _minute.clear()
+        if len(_day) > MAX_TRACKED_IPS:  # beyond this many IPs the global daily cap is what matters
+            _day.clear()
         if _global[0] >= GLOBAL_PER_DAY:
             raise HTTPException(503, "The tightener has hit its daily limit. Try again tomorrow.")
         q = _minute[ip]
@@ -262,7 +280,7 @@ def _public_limited(ip: str) -> bool:
         if len(q) >= PUBLIC_PER_IP_PER_MIN:
             return True
         q.append(now)
-        if len(_public) > 50_000:  # keep memory bounded
+        if len(_public) > MAX_TRACKED_IPS:  # keep memory bounded
             _public.clear()
     return False
 
@@ -275,8 +293,8 @@ async def app(scope, receive, send):
         return await _strict(scope, receive, send)
     if (path.startswith("/api") or path.startswith("/mcp")) and scope.get("method") != "OPTIONS":
         headers = dict(scope.get("headers") or [])
-        fwd = headers.get(b"x-forwarded-for", b"").decode().split(",")[0].strip()
-        ip = fwd or (scope.get("client") or ("?",))[0]
+        ip = _ip_from(headers.get(b"x-forwarded-for", b"").decode("latin-1"),
+                      (scope.get("client") or ("",))[0])
         if _public_limited(ip):
             body = b'{"detail":"Rate limit exceeded - try again in a minute."}'
             await send({"type": "http.response.start", "status": 429,

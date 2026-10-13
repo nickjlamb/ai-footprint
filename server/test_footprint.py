@@ -109,3 +109,22 @@ def test_root_redirects_to_docs(client):
 def test_health(client):
     assert client.get("/health").json() == {"ok": True}
     assert client.head("/health").status_code == 200
+
+
+def test_client_ip_ignores_spoofed_forwarded_for():
+    from main import _ip_from
+    # Railway sends [client, edge]; anything further left was supplied by the caller
+    assert _ip_from("203.0.113.9, 100.64.0.2", "100.64.0.3") == "203.0.113.9"
+    assert _ip_from("6.6.6.6, 203.0.113.9, 100.64.0.2", "100.64.0.3") == "203.0.113.9"
+    assert _ip_from("203.0.113.9", "100.64.0.3") == "203.0.113.9"
+    assert _ip_from("", "100.64.0.3") == "100.64.0.3"
+    assert _ip_from(" , ", "") == "?"
+
+
+def test_public_rate_limit_cannot_be_dodged_by_rotating_forwarded_for(client):
+    import main
+    main._public.clear()
+    hit = [client.get("/api/methodology", headers={"X-Forwarded-For": f"10.9.{i}.1, 198.51.100.7, 100.64.0.2"}).status_code
+           for i in range(main.PUBLIC_PER_IP_PER_MIN + 1)]
+    main._public.clear()
+    assert hit[-1] == 429 and set(hit[:-1]) == {200}

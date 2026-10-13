@@ -175,6 +175,7 @@ MOCK=1 uvicorn main:app --port 8000
 | `MAX_INPUT_CHARS` | `1500` | Tightener input cap |
 | `PUBLIC_PER_IP_PER_MIN` | `120` | Limit for `/mcp` and `/api/*` |
 | `DOCS_URL` | `https://www.pharmatools.ai/mcp#footprint` | Where `/` redirects |
+| `PROXY_ENTRIES` | `1` | How many entries your hosting proxy adds to the right of `X-Forwarded-For` (Railway: 1). Rate limits use the entry just before them; anything further left is ignored |
 
 </details>
 

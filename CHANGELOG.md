@@ -9,6 +9,14 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-10-13
+
+### Security
+
+- Rate limiting reads the client address from the position Railway's edge writes it in `X-Forwarded-For` and ignores entries further left, which a caller can set to anything. Forging the header no longer risks getting round the limits on other hosts. `PROXY_ENTRIES` sets how many proxy-added entries to skip.
+- The `/tighten` rate-limit maps are now capped in size, like the public limiter's.
+- Runtime dependencies are pinned to exact versions, including `mcp` 1.30.0, which carries the SDK's published security fixes. Test-only packages have moved out of `requirements.txt`. Dependabot keeps the pins current.
+
 ## [1.0.3] - 2026-10-13
 
 ### Fixed
@@ -55,7 +63,8 @@ First public release.
 
 - `2026-09`: energy per prompt from 2025 vendor disclosures (0.34 Wh simple, 1 Wh mixed, 3 Wh intensive); water at ~1.0 mL/Wh onsite and ~4.1 mL/Wh comprehensive. Typical text prompt ~0.34 mL onsite, ~1.4 mL comprehensive.
 
-[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.0...v1.0.1
