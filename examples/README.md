@@ -39,7 +39,7 @@ Once the server is connected, ask in plain language. The model chooses the tool.
     "Boundary: Onsite cooling plus water consumed generating the electricity (~4.1 mL/Wh; US grid average per Li et al.).",
     "..."
   ],
-  "methodology_version": "2026-09",
+  "methodology_version": "2026-10",
   "source": "https://www.pharmatools.ai/water-consumption-calculator"
 }
 ```

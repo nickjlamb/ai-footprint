@@ -165,3 +165,15 @@ def test_clean_figure_fills_defaults():
                        "year": 2023, "boundary": "bogus"})
     assert r == {"found": True, "low": 500.0, "high": 500.0, "unit": "mL", "per_low": 10.0,
                  "per_high": 50.0, "per": "prompt", "year": 2023, "boundary": "unstated"}
+
+
+def test_every_estimate_carries_the_likely_range():
+    r = fp.estimate_ai_footprint(25, "simple", "comprehensive", 1)
+    lo, hi = r["range"]["water_ml"]
+    assert abs(lo - 34.85 * 0.3) < 0.1 and abs(hi - 34.85 * 3) < 0.5
+    s = fp.estimate_session_footprint(1000, 400)
+    assert s["range"]["energy_wh"] == [0.1, 1.02]
+    m = fp.get_methodology()
+    assert m["uncertainty"]["range_factor"] == [0.3, 3.0]
+    assert m["methodology_version"] == "2026-10"
+

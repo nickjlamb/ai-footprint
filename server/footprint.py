@@ -8,8 +8,10 @@ methodology is revised, update the constants here and bump METHODOLOGY_VERSION.
 from __future__ import annotations
 
 PAGE_URL = "https://www.pharmatools.ai/water-consumption-calculator"
-METHODOLOGY_VERSION = "2026-09"
-REVIEWED = "September 2026"
+METHODOLOGY_VERSION = "2026-10"
+REVIEWED = "October 2026"
+# Method note (Zenodo preprint) for this methodology version. Empty until the DOI is minted.
+METHOD_NOTE_DOI = "10.5281/zenodo.23375361"
 
 # Energy per chat-style prompt, Wh (matches the page's ENERGY_PER_QUERY)
 ENERGY_PER_QUERY_WH = {"simple": 0.34, "mixed": 1.0, "intensive": 3.0}
@@ -36,9 +38,12 @@ SOURCES = [
     {"name": "Li et al., Making AI Less Thirsty",
      "url": "https://arxiv.org/abs/2304.03271",
      "used_for": "~3.1 mL/Wh for water consumed in electricity generation (US grid average)"},
-    {"name": "MIT Technology Review (2025) analysis",
-     "url": "https://www.technologyreview.com/2025/08/21/1122288/google-gemini-ai-energy/",
-     "used_for": "Image generation and long reasoning at roughly 3 Wh or more – the 'intensive' tier"},
+    {"name": "Jegham et al. (2025), How Hungry is AI? Benchmarking energy, water, and carbon footprint of LLM inference",
+     "url": "https://arxiv.org/abs/2505.09598",
+     "used_for": "Reasoning queries at ~1–12 Wh (o3: 1.2 Wh short, 12.2 Wh long) – the 3 Wh 'intensive' tier; 0.42 Wh short GPT-4o prompt"},
+    {"name": "Epoch AI (2025), How much energy does ChatGPT use?",
+     "url": "https://epoch.ai/gradient-updates/how-much-energy-does-chatgpt-use",
+     "used_for": "~0.3 Wh per typical GPT-4o query – part of the evidence for the likely range"},
     {"name": "Water Footprint Network product gallery",
      "url": "https://www.waterfootprint.org/resources/interactive-tools/product-gallery/",
      "used_for": "Lifecycle 'virtual water' comparisons (paper, tea, burger)"},
@@ -65,7 +70,9 @@ LIFECYCLE_ITEMS = [  # (label, mL) – full lifecycle footprints, a WIDER bounda
 CALIB_INPUT, CALIB_OUTPUT, OUTPUT_TO_INPUT, CACHE_TO_INPUT = 1000, 400, 5.0, 0.1
 WH_PER_INPUT_TOKEN = ENERGY_PER_QUERY_WH["simple"] / (CALIB_INPUT + OUTPUT_TO_INPUT * CALIB_OUTPUT)
 MODEL_CLASS_FACTOR = {"small": 0.3, "frontier": 1.0, "reasoning": 1.0}
-RANGE_LOW, RANGE_HIGH = 0.3, 3.0  # uncertainty band applied to the central estimate
+RANGE_LOW, RANGE_HIGH = 0.3, 3.0  # likely range applied to every central estimate (methodology 2026-10)
+RANGE_NOTE = (f"Likely range {RANGE_LOW:g}x–{RANGE_HIGH:g}x the central estimate: a judgement-based summary of how much "
+              "published per-prompt energy figures and provider/grid water intensities vary, not a statistical interval.")
 
 MAX_QUERIES = 10_000_000
 MAX_DAYS = 3650
@@ -151,6 +158,10 @@ def estimate_ai_footprint(queries_per_day: float, usage: str = "simple",
         "per_query": {"energy_wh": per_wh, "water_ml": round(per_ml, 2)},
         "per_day": {"energy_wh": round(day_wh, 2), "water_ml": round(day_ml, 1),
                     "energy": fmt_energy(day_wh), "water": fmt_water(day_ml)},
+        "range": {"energy_wh": [_r(tot_wh * RANGE_LOW, 3), _r(tot_wh * RANGE_HIGH, 3)],
+                  "water_ml": [_r(tot_ml * RANGE_LOW, 3), _r(tot_ml * RANGE_HIGH, 3)],
+                  "water": f"{fmt_water(tot_ml * RANGE_LOW)} – {fmt_water(tot_ml * RANGE_HIGH)}",
+                  "applies_to": "total"},
         "total": {"energy_wh": round(tot_wh, 2), "water_ml": round(tot_ml, 1),
                   "energy": fmt_energy(tot_wh), "water": fmt_water(tot_ml),
                   "energy_equivalents": energy_equivalents(tot_wh),
@@ -160,6 +171,7 @@ def estimate_ai_footprint(queries_per_day: float, usage: str = "simple",
             f"Boundary: {BOUNDARY_LABELS[boundary]}.",
             "Chat-style prompts (one prompt, one response). Agentic sessions can be far higher – use estimate_session_footprint.",
             "Uses the most conservative (highest) of the published onsite water intensities. Excludes model training.",
+            RANGE_NOTE,
         ],
         **_meta(),
     }
@@ -186,13 +198,21 @@ def get_methodology() -> dict:
             "What is measured: chat prompts vs agentic tasks, which reprocess a growing context over dozens of calls and can exceed per-prompt figures by orders of magnitude.",
             "Whose data centre: onsite water intensity differs ~9x between providers – 0.12 L/kWh (Amazon), 0.27 (Microsoft), ~1.08 implied by Google. This methodology uses the highest.",
         ],
+        "uncertainty": {"range_factor": [RANGE_LOW, RANGE_HIGH], "note": RANGE_NOTE,
+                        "evidence": ["Short text prompt energy: 0.24 Wh (Google, median Gemini), ~0.3 Wh (Epoch AI, GPT-4o), "
+                                     "0.34 Wh (OpenAI), 0.42 Wh (Jegham et al., GPT-4o).",
+                                     "Water per Wh: onsite 0.12–1.9 mL (provider and location), electricity-generation "
+                                     "1.3–9.5 mL (US states, Li et al.), so ~1.4–11 mL comprehensive vs 4.1 used here."]},
         "limitations": [
             "Vendor figures are not peer-reviewed, describe median prompts and exclude model training.",
             "Electricity-generation water uses US grid averages; real figures depend on data-centre location and grid mix.",
             "Results are indicative estimates, not measurements.",
         ],
         "sources": SOURCES,
-        "how_to_cite": f"PharmaTools.AI AI Water & Energy Calculator, methodology {METHODOLOGY_VERSION}. {PAGE_URL}",
+        "how_to_cite": (f"Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use "
+                        f"(methodology {METHODOLOGY_VERSION}) [Preprint]. Zenodo. https://doi.org/{METHOD_NOTE_DOI}"
+                        if METHOD_NOTE_DOI else
+                        f"PharmaTools.AI AI Water & Energy Calculator, methodology {METHODOLOGY_VERSION}. {PAGE_URL}"),
         **_meta(),
     }
 
@@ -237,7 +257,7 @@ def estimate_session_footprint(input_tokens: int, output_tokens: int, cached_inp
     notes = [
         f"Order-of-magnitude estimate. Calibrated so ~{CALIB_INPUT:,} input + ~{CALIB_OUTPUT} output tokens on a frontier model = {ENERGY_PER_QUERY_WH['simple']} Wh (one typical chat prompt).",
         f"Assumes output tokens cost ~{OUTPUT_TO_INPUT:g}x input tokens and cache reads ~{CACHE_TO_INPUT:g}x. Real values depend on model, hardware, batching and data centre.",
-        f"Range is {RANGE_LOW:g}x–{RANGE_HIGH:g}x the central estimate.",
+        RANGE_NOTE,
         "Pass the SUM of tokens across every model call in the session – agentic loops resend the context each turn.",
     ]
     if model_class == "reasoning":
@@ -258,4 +278,7 @@ def estimate_session_footprint(input_tokens: int, output_tokens: int, cached_inp
 
 
 def _meta() -> dict:
-    return {"methodology_version": METHODOLOGY_VERSION, "reviewed": REVIEWED, "source": PAGE_URL}
+    meta = {"methodology_version": METHODOLOGY_VERSION, "reviewed": REVIEWED, "source": PAGE_URL}
+    if METHOD_NOTE_DOI:
+        meta["method_note"] = f"https://doi.org/{METHOD_NOTE_DOI}"
+    return meta

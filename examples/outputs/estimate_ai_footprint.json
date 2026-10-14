@@ -15,6 +15,18 @@
         "energy": "10.2 Wh",
         "water": "41.8 mL"
     },
+    "range": {
+        "energy_wh": [
+            765.0,
+            7650.0
+        ],
+        "water_ml": [
+            3136.5,
+            31365.0
+        ],
+        "water": "3.1 L \u2013 31.4 L",
+        "applies_to": "total"
+    },
     "total": {
         "energy_wh": 2550.0,
         "water_ml": 10455.0,
@@ -34,9 +46,11 @@
         "Usage tier: Simple text \u2013 chat, search, summaries (0.34 Wh per prompt).",
         "Boundary: Onsite cooling plus water consumed generating the electricity (~4.1 mL/Wh; US grid average per Li et al.).",
         "Chat-style prompts (one prompt, one response). Agentic sessions can be far higher \u2013 use estimate_session_footprint.",
-        "Uses the most conservative (highest) of the published onsite water intensities. Excludes model training."
+        "Uses the most conservative (highest) of the published onsite water intensities. Excludes model training.",
+        "Likely range 0.3x\u20133x the central estimate: a judgement-based summary of how much published per-prompt energy figures and provider/grid water intensities vary, not a statistical interval."
     ],
-    "methodology_version": "2026-09",
-    "reviewed": "September 2026",
-    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+    "methodology_version": "2026-10",
+    "reviewed": "October 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator",
+    "method_note": "https://doi.org/10.5281/zenodo.23375361"
 }

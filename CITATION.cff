@@ -23,3 +23,16 @@ keywords:
   - water-footprint
   - energy
   - green-ai
+preferred-citation:
+  type: report
+  title: "An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10)"
+  authors:
+    - family-names: Lamb
+      given-names: Nick
+      orcid: "https://orcid.org/0009-0009-6266-8499"
+      affiliation: PharmaTools.AI
+  doi: "10.5281/zenodo.23375361"
+  publisher:
+    name: Zenodo
+  year: 2026
+  url: "https://doi.org/10.5281/zenodo.23375361"

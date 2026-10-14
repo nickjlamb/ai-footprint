@@ -11,7 +11,7 @@
   <a href="https://registry.modelcontextprotocol.io/?q=ai-footprint"><img alt="MCP Registry" src="https://img.shields.io/badge/MCP_Registry-io.github.nickjlamb%2Fai--footprint-6E56CF"></a>
   <a href="https://footprint.pharmatools.ai/health"><img alt="Hosted endpoint" src="https://img.shields.io/website?url=https%3A%2F%2Ffootprint.pharmatools.ai%2Fhealth&label=hosted%20endpoint&up_message=online&down_message=offline"></a>
   <img alt="Python 3.10 to 3.13" src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-3776AB">
-  <a href="https://www.pharmatools.ai/water-consumption-calculator"><img alt="Methodology 2026-09" src="https://img.shields.io/badge/methodology-2026--09-0d7377"></a>
+  <a href="https://www.pharmatools.ai/water-consumption-calculator"><img alt="Methodology 2026-10" src="https://img.shields.io/badge/methodology-2026--10-0d7377"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
@@ -72,7 +72,7 @@ estimate_ai_footprint(queries_per_day=30, days=250)
 
 → 2.6 kWh and 10.5 L over 250 days (comprehensive boundary)
   per prompt: 0.34 Wh, 1.39 mL · about 25.5 hrs of TV or 170 phone charges
-  methodology 2026-09 · source: pharmatools.ai/water-consumption-calculator
+  methodology 2026-10 · source: pharmatools.ai/water-consumption-calculator
 ```
 
 **Not using MCP?** The same tools are plain GET endpoints:
@@ -217,7 +217,7 @@ Issues and pull requests are welcome, particularly better sources. Read [CONTRIB
 
 ## Citing
 
-> PharmaTools.AI AI Water & Energy Calculator, methodology 2026-09. https://www.pharmatools.ai/water-consumption-calculator
+> Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23375361
 
 GitHub's **Cite this repository** button gives the software citation from [CITATION.cff](CITATION.cff).
 

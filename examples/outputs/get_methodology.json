@@ -29,6 +29,17 @@
         "What is measured: chat prompts vs agentic tasks, which reprocess a growing context over dozens of calls and can exceed per-prompt figures by orders of magnitude.",
         "Whose data centre: onsite water intensity differs ~9x between providers \u2013 0.12 L/kWh (Amazon), 0.27 (Microsoft), ~1.08 implied by Google. This methodology uses the highest."
     ],
+    "uncertainty": {
+        "range_factor": [
+            0.3,
+            3.0
+        ],
+        "note": "Likely range 0.3x\u20133x the central estimate: a judgement-based summary of how much published per-prompt energy figures and provider/grid water intensities vary, not a statistical interval.",
+        "evidence": [
+            "Short text prompt energy: 0.24 Wh (Google, median Gemini), ~0.3 Wh (Epoch AI, GPT-4o), 0.34 Wh (OpenAI), 0.42 Wh (Jegham et al., GPT-4o).",
+            "Water per Wh: onsite 0.12\u20131.9 mL (provider and location), electricity-generation 1.3\u20139.5 mL (US states, Li et al.), so ~1.4\u201311 mL comprehensive vs 4.1 used here."
+        ]
+    },
     "limitations": [
         "Vendor figures are not peer-reviewed, describe median prompts and exclude model training.",
         "Electricity-generation water uses US grid averages; real figures depend on data-centre location and grid mix.",
@@ -51,9 +62,14 @@
             "used_for": "~3.1 mL/Wh for water consumed in electricity generation (US grid average)"
         },
         {
-            "name": "MIT Technology Review (2025) analysis",
-            "url": "https://www.technologyreview.com/2025/08/21/1122288/google-gemini-ai-energy/",
-            "used_for": "Image generation and long reasoning at roughly 3 Wh or more \u2013 the 'intensive' tier"
+            "name": "Jegham et al. (2025), How Hungry is AI? Benchmarking energy, water, and carbon footprint of LLM inference",
+            "url": "https://arxiv.org/abs/2505.09598",
+            "used_for": "Reasoning queries at ~1\u201312 Wh (o3: 1.2 Wh short, 12.2 Wh long) \u2013 the 3 Wh 'intensive' tier; 0.42 Wh short GPT-4o prompt"
+        },
+        {
+            "name": "Epoch AI (2025), How much energy does ChatGPT use?",
+            "url": "https://epoch.ai/gradient-updates/how-much-energy-does-chatgpt-use",
+            "used_for": "~0.3 Wh per typical GPT-4o query \u2013 part of the evidence for the likely range"
         },
         {
             "name": "Water Footprint Network product gallery",
@@ -61,8 +77,9 @@
             "used_for": "Lifecycle 'virtual water' comparisons (paper, tea, burger)"
         }
     ],
-    "how_to_cite": "PharmaTools.AI AI Water & Energy Calculator, methodology 2026-09. https://www.pharmatools.ai/water-consumption-calculator",
-    "methodology_version": "2026-09",
-    "reviewed": "September 2026",
-    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+    "how_to_cite": "Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23375361",
+    "methodology_version": "2026-10",
+    "reviewed": "October 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator",
+    "method_note": "https://doi.org/10.5281/zenodo.23375361"
 }

@@ -5,9 +5,13 @@ All notable changes to this project are recorded here. The format follows [Keep 
 Two version numbers matter:
 
 - **Release version** (`1.0.0`): the server, its tools and the JSON API. A breaking change to a tool's inputs or outputs is a major version.
-- **Methodology version** (`2026-09`): the figures and sources. Every response carries it. A methodology change is always noted here, even when the release is a patch.
+- **Methodology version** (`2026-10`): the figures and sources. Every response carries it. A methodology change is always noted here, even when the release is a patch.
 
 ## [Unreleased]
+
+### Methodology
+
+- `2026-10`: figures unchanged. Every estimate now carries a likely range of 0.3x to 3x the central figure: `estimate_ai_footprint` gains a `range` for the total, matching the session tool, and `get_methodology` gains an `uncertainty` block with the evidence behind the band. The 3 Wh intensive tier is now sourced to benchmark data (Jegham et al. 2025) rather than a news analysis, and Epoch AI's GPT-4o estimate is listed; the figure is unchanged. The method is written up as a versioned note on Zenodo; responses link it as `method_note` once the DOI is set (`METHOD_NOTE_DOI`), and `how_to_cite` then cites it.
 
 ### Added
 

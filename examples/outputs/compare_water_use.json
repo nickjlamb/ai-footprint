@@ -33,7 +33,8 @@
     ],
     "equivalent_text_prompts_comprehensive": 359,
     "caveat": "Lifecycle items are full 'virtual water' footprints (including rainwater for crops), a much wider boundary than AI operational water. Use them for scale, not like-for-like. Almond irrigation and data-centre cooling also draw on different water supplies.",
-    "methodology_version": "2026-09",
-    "reviewed": "September 2026",
-    "source": "https://www.pharmatools.ai/water-consumption-calculator"
+    "methodology_version": "2026-10",
+    "reviewed": "October 2026",
+    "source": "https://www.pharmatools.ai/water-consumption-calculator",
+    "method_note": "https://doi.org/10.5281/zenodo.23375361"
 }
