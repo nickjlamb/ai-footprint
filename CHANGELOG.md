@@ -9,6 +9,10 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+### Added
+
+- Embeddable widget for other sites. `GET /widget` is the calculator as a small page any site can put in an iframe (`frame-ancestors *`), and `GET /widget.js` is a one-line embed that replaces its own script tag with that iframe and keeps its height in step. Options as `data-` attributes or query parameters: `theme` (light, dark, auto), `accent` (hex colour), `prompts` (1–200), `mix` (text, mixed, intensive) and `basis` (comprehensive, onsite). The figures are injected from `footprint.py`, so the widget always matches the API and the page. Everything is computed in the visitor's browser: no API calls, cookies or tracking.
+
 ### Methodology
 
 - `2026-10`: figures unchanged. Every estimate now carries a likely range of 0.3x to 3x the central figure: `estimate_ai_footprint` gains a `range` for the total, matching the session tool, and `get_methodology` gains an `uncertainty` block with the evidence behind the band. The 3 Wh intensive tier is now sourced to benchmark data (Jegham et al. 2025) rather than a news analysis, and Epoch AI's GPT-4o estimate is listed; the figure is unchanged. The method is written up as a versioned note on Zenodo; responses link it as `method_note` once the DOI is set (`METHOD_NOTE_DOI`), and `how_to_cite` then cites it.

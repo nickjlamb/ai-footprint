@@ -177,3 +177,16 @@ def test_every_estimate_carries_the_likely_range():
     assert m["uncertainty"]["range_factor"] == [0.3, 3.0]
     assert m["methodology_version"] == "2026-10"
 
+
+def test_widget_is_embeddable_and_uses_the_server_figures(client):
+    r = client.get("/widget")
+    assert r.status_code == 200 and r.headers["content-type"].startswith("text/html")
+    assert "frame-ancestors *" in r.headers["content-security-policy"]
+    assert "x-frame-options" not in r.headers
+    assert "{{" not in r.text
+    assert '"simple": 0.34' in r.text and '"comprehensive": 4.1' in r.text
+    assert fp.METHODOLOGY_VERSION in r.text
+    js = client.get("/widget.js")
+    assert js.status_code == 200 and "javascript" in js.headers["content-type"]
+    assert "{{" not in js.text and "/widget?" in js.text
+

@@ -215,6 +215,22 @@ The hosted server keeps no record of what you ask. Its logs contain the name of 
 
 Issues and pull requests are welcome, particularly better sources. Read [CONTRIBUTING.md](CONTRIBUTING.md) first: changes to the figures follow a short methodology process so the server and the calculator page stay in step. Security issues go through [SECURITY.md](SECURITY.md), not public issues.
 
+## Embed the calculator on your site
+
+One line, no account or key. It works on any site that accepts a script tag, including WordPress, Webflow, Squarespace and Ghost.
+
+```html
+<script src="https://footprint.pharmatools.ai/widget.js" data-theme="auto" data-prompts="25" data-mix="text" async></script>
+```
+
+Options: `data-theme` (`light`, `dark`, `auto`), `data-accent` (a hex colour such as `0d7377`), `data-prompts` (1–200), `data-mix` (`text`, `mixed`, `intensive`) and `data-basis` (`comprehensive`, `onsite`). Where scripts aren't allowed, use the iframe directly:
+
+```html
+<iframe src="https://footprint.pharmatools.ai/widget?theme=auto&prompts=25" title="AI water and energy calculator" width="100%" height="560" style="border:0;max-width:640px" loading="lazy"></iframe>
+```
+
+The widget uses the same figures and methodology version as the API, computes everything in the visitor's browser and sets no cookies. The calculator page has a builder with a live preview.
+
 ## Citing
 
 > Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23375361

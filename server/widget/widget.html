@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI water &amp; energy calculator · PharmaTools.AI</title>
+<style>
+:root{--accent:#1d5bff;--bg:#ffffff;--card:#f5f8fc;--ink:#0b1630;--body:#3a4863;--muted:#5d6b85;--rule:#e2e8f2;--seg:#eef2f8;--on:#ffffff}
+:root[data-theme="dark"]{--accent:#5ee1ff;--on:#04122b;--bg:#0b1630;--card:#111f3d;--ink:#ffffff;--body:#d6e1f5;--muted:#9db1d3;--rule:rgba(158,197,255,.18);--seg:rgba(158,197,255,.08)}
+@media (prefers-color-scheme:dark){:root[data-theme="auto"]{--accent:#5ee1ff;--on:#04122b;--bg:#0b1630;--card:#111f3d;--ink:#ffffff;--body:#d6e1f5;--muted:#9db1d3;--rule:rgba(158,197,255,.18);--seg:rgba(158,197,255,.08)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--body);-webkit-font-smoothing:antialiased}
+.w{background:var(--bg);border:1px solid var(--rule);border-radius:18px;padding:20px 20px 16px;max-width:640px;margin:0 auto}
+h1{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.3}
+.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.row{margin-top:16px}
+.lh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+label,.lbl{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.val{font-size:20px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.val span{font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;margin-top:4px;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--accent) var(--p,12.5%),var(--rule) var(--p,12.5%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:var(--rule)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:999px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--accent);margin-top:-8px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:6px;padding:3px;border-radius:12px;background:var(--seg);border:1px solid var(--rule)}
+.seg.two{grid-template-columns:1fr 1fr}
+.seg button{font:500 13px/1.25 inherit;font-family:inherit;color:var(--muted);background:transparent;border:0;border-radius:9px;padding:8px 6px;min-height:40px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--on);font-weight:600}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.out{margin-top:16px;padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--rule)}
+.k{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.big{font-size:40px;font-weight:700;line-height:1.05;color:var(--ink);letter-spacing:-.03em;margin-top:4px;font-variant-numeric:tabular-nums}
+.big small{font-size:.42em;color:var(--accent);margin-left:4px;letter-spacing:0;font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13.5px;margin-top:6px}
+.facts b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.rng{font-size:12.5px;color:var(--muted);margin-top:8px}
+.rng b{color:var(--body);font-weight:600}
+.ft{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-size:12px;color:var(--muted)}
+.ft a{color:var(--accent);font-weight:600;text-decoration:none}
+.ft a:hover{text-decoration:underline}
+@media (max-width:420px){.w{padding:16px 14px 14px;border-radius:14px}.big{font-size:34px}.seg button{font-size:12.5px}}
+</style>
+</head>
+<body>
+<main class="w" aria-labelledby="h">
+<h1 id="h">How much water does your AI use?</h1>
+<p class="sub">Estimated from AI companies' own 2025–26 figures.</p>
+<div class="row">
+<div class="lh"><label for="q">Prompts per day</label><div class="val"><output id="qv" for="q">25</output><span>/ day</span></div></div>
+<input id="q" type="range" min="1" max="200" value="25">
+</div>
+<div class="row">
+<span class="lbl" id="ml">Mostly used for</span>
+<div class="seg" role="group" aria-labelledby="ml">
+<button type="button" data-mix="simple" aria-pressed="true">Simple text</button>
+<button type="button" data-mix="mixed" aria-pressed="false">Mixed use</button>
+<button type="button" data-mix="intensive" aria-pressed="false">Images &amp; reasoning</button>
+</div>
+</div>
+<div class="row">
+<span class="lbl" id="bl">What to count</span>
+<div class="seg two" role="group" aria-labelledby="bl">
+<button type="button" data-basis="onsite" aria-pressed="false">Cooling only</button>
+<button type="button" data-basis="comprehensive" aria-pressed="true">+ Electricity water</button>
+</div>
+</div>
+<div class="out" aria-live="polite">
+<div class="k">Water per day</div>
+<div class="big" id="w">34.9<small>mL</small></div>
+<div class="facts"><span><b id="y">12.7 L</b> a year</span><span><b id="e">8.5 Wh</b> of energy a day</span></div>
+<p class="rng">Likely range <b id="r">10.5 mL – 105 mL</b> a day</p>
+</div>
+<div class="ft"><span>PharmaTools.AI · methodology <span id="ver">{{VERSION}}</span></span><a id="more" href="{{PAGE}}" target="_blank" rel="noopener">Full calculator &amp; method →</a></div>
+</main>
+<script>
+(function(){
+var C = {{CONSTANTS}};
+var p = new URLSearchParams(location.search);
+function pick(v, ok, d){ return ok.indexOf(v) >= 0 ? v : d; }
+var theme = pick(p.get('theme'), ['light', 'dark', 'auto'], 'auto');
+document.documentElement.setAttribute('data-theme', theme);
+var acc = (p.get('accent') || '').replace(/^#/, '');
+if (/^[0-9a-f]{6}$/i.test(acc)) {
+  // Pick white or near-black text on the accent, whichever reads better.
+  var lum = [0, 2, 4].map(function(i){ var c = parseInt(acc.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); });
+  var L = 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+  document.documentElement.style.setProperty('--accent', '#' + acc);
+  document.documentElement.style.setProperty('--on', L > 0.4 ? '#04122b' : '#ffffff');
+}
+var mixAlias = { text: 'simple', simple: 'simple', mixed: 'mixed', intensive: 'intensive', images: 'intensive' };
+var st = {
+  q: Math.max(1, Math.min(200, parseInt(p.get('prompts'), 10) || 25)),
+  mix: mixAlias[p.get('mix')] || 'simple',
+  basis: p.get('basis') === 'onsite' || p.get('basis') === 'cooling' ? 'onsite' : 'comprehensive'
+};
+var $ = function(id){ return document.getElementById(id); };
+function trim(s){ return s.replace(/\.0$/, ''); }
+function fW(ml){ if (ml >= 1e6) return trim((ml / 1e6).toFixed(1)) + ' m³'; if (ml >= 1000) return trim((ml / 1000).toFixed(1)) + ' L'; if (ml >= 100) return Math.round(ml) + ' mL'; return trim(ml.toFixed(1)) + ' mL'; }
+function fE(wh){ if (wh >= 1000) return trim((wh / 1000).toFixed(1)) + ' kWh'; if (wh >= 100) return Math.round(wh) + ' Wh'; return trim(wh.toFixed(1)) + ' Wh'; }
+function render(){
+  var wh = st.q * C.energy[st.mix], ml = wh * C.water[st.basis], w = fW(ml), i = w.lastIndexOf(' ');
+  $('q').value = st.q; $('qv').textContent = st.q; $('q').style.setProperty('--p', (st.q - 1) / 199 * 100 + '%');
+  $('w').innerHTML = w.slice(0, i) + '<small>' + w.slice(i + 1) + '</small>';
+  $('y').textContent = fW(ml * 365); $('e').textContent = fE(wh);
+  $('r').textContent = fW(ml * C.range[0]) + ' – ' + fW(ml * C.range[1]);
+  document.querySelectorAll('[data-mix]').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-mix') === st.mix ? 'true' : 'false'); });
+  document.querySelectorAll('[data-basis]').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-basis') === st.basis ? 'true' : 'false'); });
+  size();
+}
+$('q').addEventListener('input', function(){ st.q = parseInt(this.value, 10); render(); });
+document.querySelectorAll('[data-mix]').forEach(function(b){ b.addEventListener('click', function(){ st.mix = b.getAttribute('data-mix'); render(); }); });
+document.querySelectorAll('[data-basis]').forEach(function(b){ b.addEventListener('click', function(){ st.basis = b.getAttribute('data-basis'); render(); }); });
+// Link back with the embedding site as the campaign, so the publisher can be credited.
+var host = ''; try { host = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+var u = new URL(C.page); u.searchParams.set('utm_source', 'ai-footprint-widget'); u.searchParams.set('utm_medium', 'embed'); if (host) u.searchParams.set('utm_campaign', host);
+$('more').href = u.toString();
+// Tell the embedding page how tall the widget is (used by widget.js to size the iframe).
+var id = p.get('id') || '', lastH = 0;
+function size(){ var h = Math.ceil(document.querySelector('.w').getBoundingClientRect().height) + 2; if (h !== lastH && window.parent !== window) { lastH = h; window.parent.postMessage({ type: 'ai-footprint-widget:height', id: id, height: h }, '*'); } }
+window.addEventListener('resize', size);
+render();
+})();
+</script>
+</body>
+</html>

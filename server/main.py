@@ -21,7 +21,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from pydantic import BaseModel
 
 import footprint as fp
@@ -156,6 +156,54 @@ def root():
 @api.api_route("/health", methods=["GET", "HEAD"])  # HEAD for uptime monitors and status badges
 def health():
     return {"ok": True}
+
+
+# ---------------------------------------------------------------- embeddable widget
+# GET /widget     -> the calculator as a small page other sites can put in an iframe
+# GET /widget.js  -> one-line embed: replaces its own <script> tag with that iframe and sizes it
+# Figures come from footprint.py, so the widget always matches the server and the page.
+# Everything is computed in the visitor's browser: no API calls, cookies or tracking.
+WIDGET_ORIGIN = os.getenv("WIDGET_ORIGIN", "https://footprint.pharmatools.ai").rstrip("/")
+_WIDGET_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "widget")
+
+
+def _widget_files() -> tuple[bytes, bytes]:
+    with open(os.path.join(_WIDGET_DIR, "widget.html"), encoding="utf-8") as f:
+        page = f.read()
+    with open(os.path.join(_WIDGET_DIR, "widget.js"), encoding="utf-8") as f:
+        script = f.read()
+    consts = {
+        "energy": fp.ENERGY_PER_QUERY_WH,
+        "water": fp.WATER_PER_WH_ML,
+        "range": [fp.RANGE_LOW, fp.RANGE_HIGH],
+        "page": fp.PAGE_URL,
+    }
+    page = (page.replace("{{CONSTANTS}}", json.dumps(consts))
+                .replace("{{VERSION}}", fp.METHODOLOGY_VERSION)
+                .replace("{{PAGE}}", fp.PAGE_URL))
+    return page.encode(), script.replace("{{ORIGIN}}", WIDGET_ORIGIN).encode()
+
+
+_WIDGET_HTML, _WIDGET_JS = _widget_files()
+_WIDGET_HEADERS = {
+    "Cache-Control": "public, max-age=3600",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+}
+
+
+@api.api_route("/widget", methods=["GET", "HEAD"], include_in_schema=False)
+def widget():
+    # Any site may frame the widget; it sends nothing anywhere.
+    csp = ("default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; "
+           "img-src data:; frame-ancestors *; base-uri 'none'; form-action 'none'")
+    return Response(_WIDGET_HTML, media_type="text/html; charset=utf-8",
+                    headers={**_WIDGET_HEADERS, "Content-Security-Policy": csp})
+
+
+@api.api_route("/widget.js", methods=["GET", "HEAD"], include_in_schema=False)
+def widget_js():
+    return Response(_WIDGET_JS, media_type="text/javascript; charset=utf-8", headers=_WIDGET_HEADERS)
 
 
 @api.post("/tighten")
