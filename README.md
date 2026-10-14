@@ -98,7 +98,7 @@ All four are annotated read-only, idempotent and closed-world, so clients can te
 flowchart LR
     A["MCP clients<br/>Claude · Cursor · agents"] -->|/mcp| R
     B["Scripts and browsers"] -->|/api/*| R
-    C["Calculator page<br/>pharmatools.ai"] -->|/tighten| R
+    C["Calculator page<br/>pharmatools.ai"] -->|/tighten · /read-claim| R
 
     subgraph app["One ASGI app · server/main.py"]
         R{{"Path router<br/>CORS · rate limits"}}
@@ -183,6 +183,8 @@ MOCK=1 uvicorn main:app --port 8000
 
 `POST /tighten` powers the "Make your first prompt the only one" tool on the calculator page. It sends a draft prompt to Claude Haiku, which rewrites it to get a usable answer first time, filling gaps with `[placeholders]` rather than invented facts. The page then shows what the rewrite itself cost in water against the follow-ups it should save. Unlike the footprint tools it calls a model, so it's locked down: pharmatools.ai-only CORS, a 1,500-character input cap, per-IP and daily caps, forced tool output and no prompt logging. The page embed is in [`web/prompt-tightener-embed.html`](web/prompt-tightener-embed.html).
 
+`POST /read-claim` backs the headline checker on the same page. The page reads well-known claims and simple figures itself, in the browser. Only when it can't, and the visitor chooses to, it sends the claim here. The model just extracts what the claim states (amount, unit, what it's per), and the page explains it with fixed rules. It has the same protections as `/tighten`.
+
 ## Development
 
 ```bash
@@ -198,7 +200,7 @@ CI runs lint and tests on Python 3.10 to 3.13, then starts the server and drives
 server/
   footprint.py        constants, methodology and arithmetic (single source of truth)
   mcp_tools.py        the four MCP tools
-  main.py             ASGI app: /mcp, /api/*, /tighten, CORS and rate limits
+  main.py             ASGI app: /mcp, /api/*, /tighten, /read-claim, CORS and rate limits
   test_footprint.py   parity, validation and HTTP tests
 examples/             MCP client, JS and curl examples, captured outputs
 web/                  calculator-page embed for the tightener

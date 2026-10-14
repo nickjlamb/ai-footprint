@@ -9,6 +9,10 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+### Added
+
+- `POST /read-claim` for the calculator page's headline checker. When the page can't read a pasted claim itself, and the visitor chooses to, it sends the claim here. Claude Haiku returns only what the claim states (amount, unit, what it's per, year, boundary) through a forced tool call, and the server checks those fields before returning them. The page then explains the claim using fixed rules, so the model never writes the verdict. It has the same protections as `/tighten`: pharmatools.ai-only CORS, per-IP and daily caps (shared with the tightener), a 400-character cap and no logging of the text.
+
 ## [1.0.4] - 2026-10-13
 
 ### Security

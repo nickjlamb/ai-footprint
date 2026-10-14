@@ -128,3 +128,40 @@ def test_public_rate_limit_cannot_be_dodged_by_rotating_forwarded_for(client):
            for i in range(main.PUBLIC_PER_IP_PER_MIN + 1)]
     main._public.clear()
     assert hit[-1] == 429 and set(hit[:-1]) == {200}
+
+
+# --- headline checker: claim reader --------------------------------------------
+def test_read_claim_cors_strict(client):
+    r = client.options("/read-claim", headers={"Origin": "https://evil.example",
+                                               "Access-Control-Request-Method": "POST"})
+    assert r.status_code == 400
+    r = client.options("/read-claim", headers={"Origin": "https://pharmatools.ai",
+                                               "Access-Control-Request-Method": "POST"})
+    assert r.headers["access-control-allow-origin"] == "https://pharmatools.ai"
+
+
+def test_read_claim_mock_and_input_caps(client):
+    r = client.post("/read-claim", json={"claim": "Each AI prompt uses 2 litres of water"})
+    assert r.status_code == 200 and r.json()["found"] is True and r.json()["unit"] == "L"
+    assert client.post("/read-claim", json={"claim": "hi"}).status_code == 400
+    assert client.post("/read-claim", json={"claim": "x" * 401}).status_code == 400
+
+
+@pytest.mark.parametrize("out", [
+    {}, {"found": False}, {"found": True, "low": 5},                      # missing unit
+    {"found": True, "low": -1, "unit": "mL"},                             # negative
+    {"found": True, "low": 5, "high": 2, "unit": "mL"},                   # inverted range
+    {"found": True, "low": 5, "unit": "pints"},                           # unknown unit
+    {"found": True, "low": "lots", "unit": "mL"},                         # not a number
+])
+def test_clean_figure_rejects_malformed(out):
+    from main import _clean_figure
+    assert _clean_figure(out) == {"found": False}
+
+
+def test_clean_figure_fills_defaults():
+    from main import _clean_figure
+    r = _clean_figure({"found": True, "low": 500, "unit": "mL", "per_low": 10, "per_high": 50,
+                       "year": 2023, "boundary": "bogus"})
+    assert r == {"found": True, "low": 500.0, "high": 500.0, "unit": "mL", "per_low": 10.0,
+                 "per_high": 50.0, "per": "prompt", "year": 2023, "boundary": "unstated"}
