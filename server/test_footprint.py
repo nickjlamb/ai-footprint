@@ -190,3 +190,10 @@ def test_widget_is_embeddable_and_uses_the_server_figures(client):
     assert js.status_code == 200 and "javascript" in js.headers["content-type"]
     assert "{{" not in js.text and "/widget?" in js.text
 
+
+def test_glama_claim_file_is_public_json(client):
+    r = client.get("/.well-known/glama.json")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["$schema"] == "https://glama.ai/mcp/schemas/connector.json"
+    assert body["claim"].startswith("glama_claim_")

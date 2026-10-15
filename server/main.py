@@ -158,6 +158,17 @@ def health():
     return {"ok": True}
 
 
+# Glama directory ownership claim (https://glama.ai/mcp/connectors). The token is public by design:
+# it is bound to the Glama account and must stay published for the listing to stay verified.
+GLAMA_CLAIM = os.getenv("GLAMA_CLAIM", "glama_claim_EcTq6JYb1lwq-xyxW4ZyUUOO7aAfcmt2")
+
+
+@api.api_route("/.well-known/glama.json", methods=["GET", "HEAD"], include_in_schema=False)
+def glama_claim():
+    return JSONResponse({"$schema": "https://glama.ai/mcp/schemas/connector.json", "claim": GLAMA_CLAIM},
+                        headers={"Cache-Control": "public, max-age=3600"})
+
+
 # ---------------------------------------------------------------- embeddable widget
 # GET /widget     -> the calculator as a small page other sites can put in an iframe
 # GET /widget.js  -> one-line embed: replaces its own <script> tag with that iframe and sizes it

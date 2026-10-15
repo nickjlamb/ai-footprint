@@ -12,6 +12,7 @@ Two version numbers matter:
 ### Added
 
 - Embeddable widget for other sites. `GET /widget` is the calculator as a small page any site can put in an iframe (`frame-ancestors *`), and `GET /widget.js` is a one-line embed that replaces its own script tag with that iframe and keeps its height in step. Options as `data-` attributes or query parameters: `theme` (light, dark, auto), `accent` (hex colour), `prompts` (1–200), `mix` (text, mixed, intensive) and `basis` (comprehensive, onsite). The figures are injected from `footprint.py`, so the widget always matches the API and the page. Everything is computed in the visitor's browser: no API calls, cookies or tracking.
+- `GET /.well-known/glama.json` publishes the ownership claim for the server's [Glama](https://glama.ai/mcp/connectors) listing (override with `GLAMA_CLAIM`).
 
 ### Methodology
 
