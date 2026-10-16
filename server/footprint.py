@@ -11,7 +11,7 @@ PAGE_URL = "https://www.pharmatools.ai/water-consumption-calculator"
 METHODOLOGY_VERSION = "2026-10"
 REVIEWED = "October 2026"
 # Method note (Zenodo preprint) for this methodology version. Empty until the DOI is minted.
-METHOD_NOTE_DOI = "10.5281/zenodo.23375361"
+METHOD_NOTE_DOI = "10.5281/zenodo.23417340"
 
 # Energy per chat-style prompt, Wh (matches the page's ENERGY_PER_QUERY)
 ENERGY_PER_QUERY_WH = {"simple": 0.34, "mixed": 1.0, "intensive": 3.0}

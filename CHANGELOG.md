@@ -16,6 +16,7 @@ Two version numbers matter:
 
 ### Methodology
 
+- Method note revision 2 (16 October 2026, [doi:10.5281/zenodo.23417340](https://doi.org/10.5281/zenodo.23417340)): clearer explanations, documented chat-history rules, related work and fuller limitations. Results now link to it. Figures and methodology version unchanged.
 - `2026-10`: figures unchanged. Every estimate now carries a likely range of 0.3x to 3x the central figure: `estimate_ai_footprint` gains a `range` for the total, matching the session tool, and `get_methodology` gains an `uncertainty` block with the evidence behind the band. The 3 Wh intensive tier is now sourced to benchmark data (Jegham et al. 2025) rather than a news analysis, and Epoch AI's GPT-4o estimate is listed; the figure is unchanged. The method is written up as a versioned note on Zenodo; responses link it as `method_note` once the DOI is set (`METHOD_NOTE_DOI`), and `how_to_cite` then cites it.
 
 ### Added

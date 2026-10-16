@@ -233,7 +233,7 @@ The widget uses the same figures and methodology version as the API, computes ev
 
 ## Citing
 
-> Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23375361
+> Lamb, N. (2026). An energy-first method for estimating the water and energy footprint of AI use (methodology 2026-10) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23417340
 
 GitHub's **Cite this repository** button gives the software citation from [CITATION.cff](CITATION.cff).
 
