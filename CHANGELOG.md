@@ -9,8 +9,12 @@ Two version numbers matter:
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-09
+
 ### Added
 
+- Server icon. `GET /icon.svg` serves it, and it is listed in `server.json` and in the MCP `initialize` response.
+- Every tool argument now has a description in its input schema, not only in the tool's docstring. A test checks this.
 - Embeddable widget for other sites. `GET /widget` is the calculator as a small page any site can put in an iframe (`frame-ancestors *`), and `GET /widget.js` is a one-line embed that replaces its own script tag with that iframe and keeps its height in step. Options as `data-` attributes or query parameters: `theme` (light, dark, auto), `accent` (hex colour), `prompts` (1–200), `mix` (text, mixed, intensive) and `basis` (comprehensive, onsite). The figures are injected from `footprint.py`, so the widget always matches the API and the page. Everything is computed in the visitor's browser: no API calls, cookies or tracking.
 - `GET /.well-known/glama.json` publishes the ownership claim for the server's [Glama](https://glama.ai/mcp/connectors) listing (override with `GLAMA_CLAIM`).
 
@@ -77,7 +81,8 @@ First public release.
 
 - `2026-09`: energy per prompt from 2025 vendor disclosures (0.34 Wh simple, 1 Wh mixed, 3 Wh intensive); water at ~1.0 mL/Wh onsite and ~4.1 mL/Wh comprehensive. Typical text prompt ~0.34 mL onsite, ~1.4 mL comprehensive.
 
-[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/nickjlamb/ai-footprint/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.4...v1.1.0
 [1.0.4]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/nickjlamb/ai-footprint/compare/v1.0.1...v1.0.2

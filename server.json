@@ -3,8 +3,17 @@
   "name": "io.github.nickjlamb/ai-footprint",
   "title": "AI Footprint",
   "description": "Water and energy footprint of AI use: chat prompts, agent sessions, methodology and sources.",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "websiteUrl": "https://www.pharmatools.ai/mcp#footprint",
+  "icons": [
+    {
+      "src": "https://footprint.pharmatools.ai/icon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": [
+        "any"
+      ]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",

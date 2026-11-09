@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="AI Footprint">
+  <rect width="512" height="512" rx="112" fill="#0d7377"/>
+  <g transform="translate(22 27) scale(9)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 8c7 9 12 16 12 23a12 12 0 0 1-24 0c0-7 5-14 12-23z" stroke="#ffffff" stroke-width="2.4"/>
+    <path d="M20 32a6 6 0 0 0 6 6" stroke="#bfe3e4" stroke-width="1.8"/>
+  </g>
+</svg>

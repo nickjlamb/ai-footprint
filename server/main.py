@@ -212,6 +212,17 @@ def widget():
                     headers={**_WIDGET_HEADERS, "Content-Security-Policy": csp})
 
 
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "icon.svg"), "rb") as _f:
+    _ICON_SVG = _f.read()
+
+
+@api.api_route("/icon.svg", methods=["GET", "HEAD"], include_in_schema=False)
+def icon():
+    # Server icon, referenced from server.json and the MCP initialize response.
+    return Response(_ICON_SVG, media_type="image/svg+xml",
+                    headers={**_WIDGET_HEADERS, "Cache-Control": "public, max-age=86400"})
+
+
 @api.api_route("/widget.js", methods=["GET", "HEAD"], include_in_schema=False)
 def widget_js():
     return Response(_WIDGET_JS, media_type="text/javascript; charset=utf-8", headers=_WIDGET_HEADERS)

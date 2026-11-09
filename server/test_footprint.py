@@ -197,3 +197,18 @@ def test_glama_claim_file_is_public_json(client):
     body = r.json()
     assert body["$schema"] == "https://glama.ai/mcp/schemas/connector.json"
     assert body["claim"].startswith("glama_claim_")
+
+
+def test_every_tool_argument_has_a_description():
+    # Agents choose and fill tools from these; directories such as mcptry score them.
+    import asyncio
+
+    from mcp_tools import mcp
+    for t in asyncio.run(mcp.list_tools()):
+        for name, prop in t.inputSchema.get("properties", {}).items():
+            assert prop.get("description"), f"{t.name}.{name} has no description"
+
+
+def test_icon_is_served(client):
+    r = client.get("/icon.svg")
+    assert r.status_code == 200 and r.headers["content-type"].startswith("image/svg+xml")

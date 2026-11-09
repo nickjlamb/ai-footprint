@@ -1,10 +1,11 @@
 """MCP server: AI water & energy footprint tools (streamable HTTP at /mcp)."""
 import json
-from typing import Literal
+from typing import Annotated, Literal
 
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
-from mcp.types import ToolAnnotations
+from mcp.types import Icon, ToolAnnotations
+from pydantic import Field
 
 import footprint as fp
 
@@ -16,10 +17,13 @@ INSTRUCTIONS = (
     "widely quoted 2023 estimates describe hardware that is no longer in use."
 )
 
+ICON_URL = "https://footprint.pharmatools.ai/icon.svg"
+
 mcp = FastMCP(
     "ai-water-footprint",
     instructions=INSTRUCTIONS,
     website_url=fp.PAGE_URL,
+    icons=[Icon(src=ICON_URL, mimeType="image/svg+xml", sizes=["any"])],
     stateless_http=True,
     json_response=True,
     streamable_http_path="/mcp",
@@ -35,16 +39,26 @@ def _ro(title: str) -> ToolAnnotations:
                            openWorldHint=False)
 
 
+BOUNDARY_DESC = ("Accounting boundary: 'onsite' = data-centre cooling water only (as vendors report); "
+                 "'comprehensive' = also counts water used to generate the electricity (the wider "
+                 "boundary most researchers use).")
+
+
 def _log(name: str) -> None:
     print(json.dumps({"event": "tool_call", "tool": name}), flush=True)
 
 
 @mcp.tool(annotations=_ro("Estimate AI water & energy footprint"), title="Estimate AI water & energy footprint")
 def estimate_ai_footprint(
-    queries_per_day: float,
-    usage: Literal["simple", "mixed", "intensive"] = "simple",
-    boundary: Literal["onsite", "comprehensive"] = "comprehensive",
-    days: int = 1,
+    queries_per_day: Annotated[float, Field(
+        description="Number of AI prompts (chat messages sent) per day, e.g. 20.")],
+    usage: Annotated[Literal["simple", "mixed", "intensive"], Field(
+        description="Type of use: 'simple' = text chat (~0.34 Wh/prompt), 'mixed' = some heavier prompts "
+                    "(~1 Wh), 'intensive' = image generation or deep reasoning (~3 Wh).")] = "simple",
+    boundary: Annotated[Literal["onsite", "comprehensive"], Field(
+        description=BOUNDARY_DESC)] = "comprehensive",
+    days: Annotated[int, Field(
+        description="Number of days to total over, e.g. 1, 250 (working year) or 365.")] = 1,
 ) -> dict:
     """Estimate the water (mL) and energy (Wh) used by chat-style AI prompts (ChatGPT, Claude, Gemini etc.).
 
@@ -68,7 +82,9 @@ def get_methodology() -> dict:
 
 
 @mcp.tool(annotations=_ro("Put an amount of water in everyday context"), title="Put an amount of water in everyday context")
-def compare_water_use(water_ml: float) -> dict:
+def compare_water_use(
+    water_ml: Annotated[float, Field(description="Volume of water in millilitres (mL) to put in context.")],
+) -> dict:
     """Convert a volume of water (mL) into everyday comparisons: teaspoons, 500 mL bottles, shower time,
     and lifecycle items (A4 sheet, almond, cup of tea, beef burger), plus the number of typical AI text
     prompts it equals. Includes the boundary caveat that lifecycle footprints are not like-for-like."""
@@ -78,11 +94,17 @@ def compare_water_use(water_ml: float) -> dict:
 
 @mcp.tool(annotations=_ro("Estimate an AI session's footprint from token counts"), title="Estimate an AI session's footprint from token counts")
 def estimate_session_footprint(
-    input_tokens: int,
-    output_tokens: int,
-    cached_input_tokens: int = 0,
-    model_class: Literal["small", "frontier", "reasoning"] = "frontier",
-    boundary: Literal["onsite", "comprehensive"] = "comprehensive",
+    input_tokens: Annotated[int, Field(
+        description="Uncached input (prompt) tokens, summed across every model call in the session.")],
+    output_tokens: Annotated[int, Field(
+        description="Output tokens, including any reasoning/thinking tokens, summed across every model call.")],
+    cached_input_tokens: Annotated[int, Field(
+        description="Prompt-cache read tokens, summed across every model call. 0 if unknown.")] = 0,
+    model_class: Annotated[Literal["small", "frontier", "reasoning"], Field(
+        description="Model size: 'small' = Haiku/mini/Flash-class, 'frontier' = flagship models, "
+                    "'reasoning' = extended-thinking models.")] = "frontier",
+    boundary: Annotated[Literal["onsite", "comprehensive"], Field(
+        description=BOUNDARY_DESC)] = "comprehensive",
 ) -> dict:
     """Estimate the water and energy of an AI session (e.g. an agent or coding-assistant run) from its token
     usage. Pass the SUM across all model calls: input_tokens (uncached prompt tokens), output_tokens
